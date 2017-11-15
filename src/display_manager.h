@@ -1,0 +1,50 @@
+/*
+ * Decides what information to send to the terminal
+ * Copyright (C) 2017  Eli Stone
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef DISPLAY_MANAGER_H
+#define DISPLAY_MANAGER_H
+
+//Hell yeah
+#include <ncurses.h>
+
+#include <vector>
+
+#include "level.h"
+#include "monster.h"
+
+class display_manager
+{
+public:
+    void drawBaseLayer();
+    void drawMonsterLayer();
+    void drawFrameBuffer();
+    void drawStatsLayer();
+    
+    void drawFBLog();
+    
+    void drawIntro();
+    int drawMainMenu();
+    
+    
+private:
+    // A complete log of the framebuffer.
+    std::vector<std::string> FBHistory;
+    int FBLogLoop(int startingValue);
+};
+
+#endif // DISPLAY_MANAGER_H
