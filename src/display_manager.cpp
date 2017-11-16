@@ -37,9 +37,7 @@ void display_manager::cleanDisplay()
 {
     curs_set(1);
     clear();
-    endwin();
-    refresh();
-    
+    endwin();    
 }
 
 
@@ -208,13 +206,18 @@ int display_manager::drawMainMenu()
 
 void display_manager::menuOptions()
 {
-
+    //load options file 
     
+    
+    
+    drawMainMenu();
 }
 
 void display_manager::menuShowStats()
 {
+    //load stats file
     
+    drawMainMenu();
 }
 
 void display_manager::menuPlantTree()

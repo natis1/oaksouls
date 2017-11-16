@@ -1,9 +1,14 @@
 #include <iostream>
 #include <ncurses.h>
 #include "display_manager.h"
+#include <signal.h>
 
-void ncurses_clean() {
-    
+void signal_cleanup(int sig) {
+    std::cout << "Recieved signal: " << sig << std::endl;
+    curs_set(1);
+    clear();
+    endwin();
+    exit(sig);
 }
 
 int main(int argc, char **argv) {
@@ -15,6 +20,10 @@ int main(int argc, char **argv) {
         std::cerr << "Or switching to a terminal or terminal emulator that isn't shit." << std::endl;
         return -1;
     }
+    // Recover from intentional killing and also segfaults in case I messed up my code
+    signal(SIGINT,signal_cleanup);
+    signal(SIGKILL,signal_cleanup);
+    signal(SIGSEGV,signal_cleanup);
     
     int result = display.drawIntro();
     std::string savefile;
