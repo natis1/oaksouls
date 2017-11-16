@@ -1,5 +1,5 @@
 /*
- * This program allows for the generation of dungeons of arbitrary size
+ * Defines certain performance settings in OakSouls
  * Copyright (C) 2017  Eli Stone
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,13 +18,24 @@
 
 #pragma once
 
-#include <vector>
+// All delays in microseconds
 
-class level
-{
-public:
-bool operator==(const level& other) const;
-protected:
-std::vector<std::vector<int>> tiles;
 
-};
+// Will increase once redrawing optimizations get built
+#define FRAMERATE 60
+#define SLOW_FRAMERATE 20
+#define SECOND 1000000
+#define KBD_POLLING_HZ 1000
+
+
+#define MAX_REDRAW_DELAY SECOND/FRAMERATE
+// For redraws that will take longer and that don't really matter
+#define SLOW_REDRAW_DELAY SECOND/SLOW_FRAMERATE
+
+#define KBD_POLLING_DELAY SECOND/KBD_POLLING_HZ
+
+// TODO: create redraw optimizations by only redrawing some stuff.
+
+// Optimization level 1 should do everything possible while still working with any terminal size > 80x24
+// Level 2 should only work with properly sized windows
+#define REDRAW_OPTIMIZATION_LEVEL 0
