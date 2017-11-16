@@ -1,6 +1,6 @@
 /*
- * This displays the map... somehow
- * Copyright (C) 2017  <copyright holder> <email>
+ * This displays the map among other things
+ * Copyright (C) 2017  Eli Stone
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,25 @@
 #include <iostream>
 
 
+int display_manager::initDisplay()
+{
+    initscr();
+    cbreak();
+    noecho();
+    int errcode = start_color();
+    return errcode;
+}
+
+void display_manager::cleanDisplay()
+{
+    curs_set(1);
+    clear();
+    endwin();
+    refresh();
+    
+}
+
+
 void display_manager::drawFBLog()
 {
     if ( FBHistory.size() < 1 ) {
@@ -36,8 +55,8 @@ void display_manager::drawFBLog()
     do {
         int c = getch();
         if ( c == 0 ) {
-            usleep(10000);
-        } else if ( c == 'q' ) {
+            usleep(SLOW_REDRAW_DELAY);
+        } else if (c == 'q' ) {
             quit = true;
         } else if (c == 'z') {
             mStart = mEnd;
@@ -92,7 +111,7 @@ int display_manager::FBLogLoop(int startingValue)
 }
 
 
-void display_manager::drawIntro()
+int display_manager::drawIntro()
 {
     move(1,0);
     int y = 1;
@@ -112,7 +131,7 @@ void display_manager::drawIntro()
     int c = 0;
     move(0,0);
     do {
-        usleep(10000);
+        usleep(SLOW_REDRAW_DELAY);
         if (c != -1) {
             clear();
             printw("Please adjust the terminal until the picture perfectly fits and press space.....");
@@ -148,7 +167,7 @@ void display_manager::drawIntro()
     }
     while ( c != ' ' );
     nodelay(stdscr, FALSE);
-    drawMainMenu();
+    return drawMainMenu();
 }
 
 int display_manager::drawMainMenu()
@@ -169,24 +188,62 @@ int display_manager::drawMainMenu()
     printw("Plant a [t]ree");
     move(15,center);
     printw("[Q]uit the game");
-    int action = 0;
-    while (action == 0) {
+    while (true) {
         switch (getch()) {
             case 'n':
-                action = 1;
+                return 1;
             case 'l':
-                action = 2;
+                return 2;
             case 'o':
-                action = 3;
+                menuOptions();
             case 's':
-                action = 4;
+                menuShowStats();
             case 't':
-                action = 5;
+                menuPlantTree();
             case 'q':
-                action = 6;
+                return 6;
         }
     }
-    return action;
 }
+
+void display_manager::menuOptions()
+{
+
+    
+}
+
+void display_manager::menuShowStats()
+{
+    
+}
+
+void display_manager::menuPlantTree()
+{
+    clear();
+    move(0,0);
+    printw("If you have a backyard, you may be able to plant your very own tree or bush.");
+    move(2,0);
+    attron(COLOR_PAIR(2));
+    printw("Advantages");
+    move(3,0);
+    attron(COLOR_PAIR(3));
+    printw("Large plants can look cool, fight pests, and provide shade");
+    move(4,0);
+    printw("Plus, they are way better for the environment than grass");
+    
+    move(6,0);
+    printw("If you are interested in learning more, check out:");
+    move(7,0);
+    printw("man 7 oaksouls");
+    
+    move(20,0);
+    printw("Good luck!");
+    move(22,0);
+    printw("Press any key to return to the main menu.");
+    getch();
+    drawMainMenu();
+}
+
+
 
 

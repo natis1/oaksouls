@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DISPLAY_MANAGER_H
-#define DISPLAY_MANAGER_H
+#pragma once
 
 //Hell yeah
 #include <ncurses.h>
@@ -26,6 +25,7 @@
 
 #include "level.h"
 #include "monster.h"
+#include "performance.h"
 
 class display_manager
 {
@@ -37,14 +37,20 @@ public:
     
     void drawFBLog();
     
-    void drawIntro();
+    int drawIntro();
     int drawMainMenu();
     
+    int initDisplay();
+    void cleanDisplay();
+    
+
     
 private:
     // A complete log of the framebuffer.
     std::vector<std::string> FBHistory;
     int FBLogLoop(int startingValue);
+    
+    void menuPlantTree();
+    void menuShowStats();
+    void menuOptions();
 };
-
-#endif // DISPLAY_MANAGER_H
