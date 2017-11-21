@@ -66,14 +66,14 @@ void file_manager::getDataPath()
     struct stat s;
     if ( stat(dataPath.c_str(), &s) != -1) {
         if (!S_ISDIR(s.st_mode)) {
-            std::cerr << "Save directory not found, rebuilding." << std::endl;
-            int err = mkdir(dataPath.c_str(), 0775);
-            if (err != 0) {
-                std::cerr << "Unable to make save directory... for some reason" << std::endl;
-            }
+            std::cerr << dataPath << " is corrupted, cannot be read, or is not a directory. Error:" << stat(dataPath.c_str(), &s) << std::endl;
         }
     } else {
-        std::cerr << dataPath << " is corrupted, cannot be read, or is not a directory. Error:" << stat(dataPath.c_str(), &s) << std::endl;
+        std::cerr << "Save directory not found, rebuilding." << std::endl;
+        int err = mkdir(dataPath.c_str(), 0775);
+        if (err != 0) {
+            std::cerr << "Unable to make save directory... for some reason" << std::endl;
+        }
     }
 }
 
