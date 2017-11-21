@@ -21,7 +21,6 @@
 #include <iostream>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <string.h>
 
 #include "file_manager.h"
 
@@ -32,37 +31,31 @@ file_manager::file_manager()
 }
 
 
-int file_manager::saveStatistics(statistics* stats)
+int file_manager::saveStatistics(statistics stats)
 {
     std::cerr << "stat file location is " << statsPath << " and data file is " << dataPath << std::endl;
     std::ofstream ofs(statsPath, std::ios::binary);
-    ofs.write((char *)stats, sizeof(stats));
+    ofs.write((char *)&stats, sizeof(stats));
     
     //TODO: Error checking
     return 0;
 }
 
 
-statistics* file_manager::loadStatistics()
+statistics file_manager::loadStatistics()
 {
     struct stat s;
     if ( stat(statsPath.c_str(), &s) != 0) {
-        statistics* blankStats = newStatistics();
+        statistics blankStats;
+        blankStats.initStatistics();
         saveStatistics(blankStats);
         return blankStats;
     } else {
-        statistics* stats;
+        statistics stats;
         std::ifstream ifs(statsPath, std::ios::binary);
         ifs.read((char *)&stats, sizeof(stats));
         return stats;
     }
-}
-
-statistics* file_manager::newStatistics()
-{
-    statistics stats;
-    statistics* st2 = &stats;
-    return st2;
 }
 
 void file_manager::getDataPath()

@@ -221,7 +221,10 @@ void display_manager::menuShowStats()
     
     file_manager fm;
     std::cerr << "file manager allocation complete" << std::endl;
-    statistics* stats = fm.loadStatistics();
+    statistics stat = fm.loadStatistics();
+    statistics* stats = &stat;
+    std::cerr << "stats loaded" << std::endl;
+
     
     std::cerr << stats->forestName << stats->forestXP << stats->getForestArea() << " are some stats" << std::endl;
     clear();
@@ -242,16 +245,13 @@ void display_manager::menuShowStats()
     osline << "Total Stats" << std::endl;
     osline << "XP:" << stats->totalXP << "    Souls:" << stats->totalCreatures << std::endl;
     osline << "Runs:" << stats->totalGamesPlayed << "    Deaths:" << stats->totalDeaths << "    Floors:" << stats->totalFloors << std::endl;
-    sleep(50);
     std::string s = osline.str();
-    sleep(5);
     
     char* c = new char[s.length() + 1];
     strcpy(c,s.c_str());
     printw(c);
+    printw("\n\nPress any key to return to the main menu");
     getch();
-    
-    
     drawMainMenu();
 }
 

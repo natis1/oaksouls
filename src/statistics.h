@@ -27,11 +27,11 @@ class statistics
 {
 public:
     
-    statistics();
+    void initStatistics();
     int getForestArea();
     
     //Most successful savegame stats
-    std::string forestName;
+    char forestName[20];
     long forestXP;
     // Number of enemies killed on characters that made it back alive successfully
     int forestCreatures;
@@ -40,7 +40,7 @@ public:
     int forestFloors;
     
     // Single run stats for best successful single run
-    std::string highestName;
+    char highestName[20];
     long highestXP;
     int highestCreatures;
     int highestLevel;

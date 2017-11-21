@@ -19,20 +19,19 @@
 #pragma once
 
 #include "statistics.h"
+
 /**
  * @todo write docs... hahahahaha like that's happening. Thanks computer.
  */
 class file_manager
 {
 public:
-    statistics* loadStatistics();
-    int saveStatistics(statistics* stats);
+    statistics loadStatistics();
+    int saveStatistics(statistics stats);
     
     file_manager();
     
-private:
-    statistics* newStatistics();
-    
+private:    
     void getDataPath();
     void getStatisticsPath();
     std::string dataPath = "";

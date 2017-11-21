@@ -17,16 +17,32 @@
  */
 
 #include "statistics.h"
+#include <string.h>
 
 #define XP_WEIGHT 1.0
 #define CREATURE_WEIGHT 250
 #define FLOOR_WEIGHT 1000
 #define STARTING_AREA 5
 
-statistics::statistics::statistics()
+
+void statistics::initStatistics()
 {
-    forestName = "Null";
-    highestName = "Null";
+    strcpy(forestName, "Null");
+    strcpy(highestName, "Null");
+    forestCreatures = 0;
+    forestDeaths = 0;
+    forestFloors = 0;
+    forestGamesPlayed = 0;
+    forestXP = 0;
+    highestCreatures = 0;
+    highestFloors = 0;
+    highestLevel = 0;
+    highestXP = 0;
+    totalCreatures = 0;
+    totalDeaths = 0;
+    totalFloors = 0;
+    totalGamesPlayed = 0;
+    totalXP = 0;
 }
 
 
