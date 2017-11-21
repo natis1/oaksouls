@@ -2,9 +2,20 @@
 #include <ncurses.h>
 #include "display_manager.h"
 #include <signal.h>
+#include <execinfo.h>
+
 
 void signal_cleanup(int sig) {
-    std::cout << "Recieved signal: " << sig << std::endl;
+    std::cerr << "Recieved signal: " << sig << std::endl;
+    
+    void *buffer[300];
+    int j, k;
+    k = backtrace(buffer, 300);
+    char **strings = backtrace_symbols(buffer, k);
+    for (j = 0; j < k; j++) {
+        std::cerr << strings[j] << std::endl;
+    }
+    
     curs_set(1);
     clear();
     endwin();

@@ -28,9 +28,14 @@ public:
     statistics* loadStatistics();
     int saveStatistics(statistics* stats);
     
+    file_manager();
+    
 private:
     statistics* newStatistics();
-    char* getDataPath();
-    char* getStatisticsPath();
+    
+    void getDataPath();
+    void getStatisticsPath();
+    std::string dataPath = "";
+    std::string statsPath = "";
     
 };

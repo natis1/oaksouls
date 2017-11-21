@@ -18,7 +18,21 @@
 
 #include "statistics.h"
 
-statistics::statistics()
-{
+#define XP_WEIGHT 1.0
+#define CREATURE_WEIGHT 250
+#define FLOOR_WEIGHT 1000
+#define STARTING_AREA 5
 
+statistics::statistics::statistics()
+{
+    forestName = "Null";
+    highestName = "Null";
 }
+
+
+int statistics::getForestArea()
+{
+    // area in square meters.
+    return ((forestXP * XP_WEIGHT + forestCreatures * CREATURE_WEIGHT + forestFloors * FLOOR_WEIGHT)/1000) + 5;
+}
+

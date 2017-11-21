@@ -16,9 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <string>
+#include <sstream>
 #include <vector>
 #include <unistd.h>
 #include "display_manager.h"
+#include "file_manager.h"
+#include <string.h>
 
 //debug only
 #include <iostream>
@@ -90,7 +93,7 @@ int display_manager::FBLogLoop(int startingValue)
     printw("Message history - Press q to return to the game.");
     int height = getmaxy(stdscr);
     move(0,1);
-    for (int i = startingValue; i < FBHistory.size(); i++) {
+    for (unsigned int i = startingValue; i < FBHistory.size(); i++) {
         int x; //discarded but whatever
         int y;
         getyx(stdscr, y, x);
@@ -112,7 +115,6 @@ int display_manager::FBLogLoop(int startingValue)
 int display_manager::drawIntro()
 {
     move(1,0);
-    int y = 1;
     printw("In a field of grass lies a single oak tree.\n");
     printw("It sits protected in its little world from the monsters around it.\n");
     printw("Until one day, when it finally grows big enough to take on the world.\n\n");
@@ -216,6 +218,39 @@ void display_manager::menuOptions()
 void display_manager::menuShowStats()
 {
     //load stats file
+    
+    file_manager fm;
+    std::cerr << "file manager allocation complete" << std::endl;
+    statistics* stats = fm.loadStatistics();
+    
+    std::cerr << stats->forestName << stats->forestXP << stats->getForestArea() << " are some stats" << std::endl;
+    clear();
+    move(2,0);
+    std::ostringstream osline;
+    
+    osline << "Best Forest: " << stats->forestName << std::endl;
+    osline << "XP:" << stats->forestXP << "    Souls:" << stats->forestCreatures << std::endl;
+    osline << "Runs:" << stats->forestGamesPlayed << "    Deaths:" << stats->forestDeaths << "    Floors:" << stats->forestFloors << std::endl;
+    osline << "Area:" << stats->getForestArea() << std::endl;
+    osline << std::endl << std::endl;
+    
+    osline << "Best Hero: " << stats->highestName << std::endl;
+    osline << "XP:" << stats->highestXP << "    Souls:" << stats->highestCreatures << std::endl;
+    osline << "Level:" << stats->highestLevel << "    Floors:" << stats->highestFloors << std::endl;
+    osline << std::endl << std::endl;
+    
+    osline << "Total Stats" << std::endl;
+    osline << "XP:" << stats->totalXP << "    Souls:" << stats->totalCreatures << std::endl;
+    osline << "Runs:" << stats->totalGamesPlayed << "    Deaths:" << stats->totalDeaths << "    Floors:" << stats->totalFloors << std::endl;
+    sleep(50);
+    std::string s = osline.str();
+    sleep(5);
+    
+    char* c = new char[s.length() + 1];
+    strcpy(c,s.c_str());
+    printw(c);
+    getch();
+    
     
     drawMainMenu();
 }

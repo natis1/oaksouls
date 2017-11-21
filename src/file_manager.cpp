@@ -21,16 +21,21 @@
 #include <iostream>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <stdlib.h>
+#include <string.h>
 
 #include "file_manager.h"
+
+file_manager::file_manager()
+{
+    getDataPath();
+    getStatisticsPath();
+}
 
 
 int file_manager::saveStatistics(statistics* stats)
 {
-    char* statfile = getDataPath();
-    strcat(statfile, "/globalstats");
-    std::ofstream ofs(statfile, std::ios::binary);
+    std::cerr << "stat file location is " << statsPath << " and data file is " << dataPath << std::endl;
+    std::ofstream ofs(statsPath, std::ios::binary);
     ofs.write((char *)stats, sizeof(stats));
     
     //TODO: Error checking
@@ -40,16 +45,14 @@ int file_manager::saveStatistics(statistics* stats)
 
 statistics* file_manager::loadStatistics()
 {
-    char* statfile = getDataPath();
-    strcat(statfile, "/globalstats");
     struct stat s;
-    if ( stat(statfile, &s) != 0) {
+    if ( stat(statsPath.c_str(), &s) != 0) {
         statistics* blankStats = newStatistics();
         saveStatistics(blankStats);
         return blankStats;
     } else {
         statistics* stats;
-        std::ifstream ifs(statfile, std::ios::binary);
+        std::ifstream ifs(statsPath, std::ios::binary);
         ifs.read((char *)&stats, sizeof(stats));
         return stats;
     }
@@ -62,25 +65,28 @@ statistics* file_manager::newStatistics()
     return st2;
 }
 
-char* file_manager::getDataPath()
+void file_manager::getDataPath()
 {
-    char* localdata = getenv("HOME");
-    strcat(localdata, "/.local/share/oaksouls");
+    dataPath = getenv("HOME");
+    dataPath = dataPath + "/.local/share/oaksouls";
+    std::cerr << dataPath << " is current path" << std::endl;
     struct stat s;
-    if ( stat(localdata, &s) != 0) {
-        int err = mkdir(localdata, 0775);
-        if (err != 0) {
-            exit(err);
+    if ( stat(dataPath.c_str(), &s) != -1) {
+        if (!S_ISDIR(s.st_mode)) {
+            std::cerr << "Save directory not found, rebuilding." << std::endl;
+            int err = mkdir(dataPath.c_str(), 0775);
+            if (err != 0) {
+                std::cerr << "Unable to make save directory... for some reason" << std::endl;
+            }
         }
+    } else {
+        std::cerr << dataPath << " is corrupted, cannot be read, or is not a directory. Error:" << stat(dataPath.c_str(), &s) << std::endl;
     }
-    return localdata;
 }
 
-char* file_manager::getStatisticsPath()
+void file_manager::getStatisticsPath()
 {
-    char* statfile = getDataPath();
-    strcat(statfile, "/globalstats");
-    return statfile;
+    statsPath = dataPath + "/globalstats";
 }
 
 

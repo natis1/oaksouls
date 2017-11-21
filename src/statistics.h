@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <string.h>
+#include <string>
 
 /**
  * @todo write docs
@@ -26,6 +26,9 @@
 class statistics
 {
 public:
+    
+    statistics();
+    int getForestArea();
     
     //Most successful savegame stats
     std::string forestName;
@@ -49,6 +52,6 @@ public:
     int totalGamesPlayed;
     int totalDeaths;
     int totalFloors;
-
+    
 };
 
