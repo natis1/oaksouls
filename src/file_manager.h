@@ -19,7 +19,7 @@
 #pragma once
 
 #include "statistics.h"
-
+#include "options.h"
 /**
  * @todo write docs... hahahahaha like that's happening. Thanks computer.
  */
@@ -28,13 +28,18 @@ class file_manager
 public:
     statistics loadStatistics();
     int saveStatistics(statistics stats);
+    options loadOptions();
+    int saveOptions(options opts);
+    
     
     file_manager();
     
 private:    
     void getDataPath();
-    void getStatisticsPath();
     std::string dataPath = "";
     std::string statsPath = "";
+    std::string optionsPath = "";
+    std::string savesPath = "";
     
+    int makeDirectory(const char* path);
 };

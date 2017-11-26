@@ -38,19 +38,20 @@ public:
     void drawFBLog();
     
     int drawIntro();
-    int drawMainMenu();
+    void drawMainMenu();
+    int mainMenuLoop();
     
     int initDisplay();
     void cleanDisplay();
     
-
-    
 private:
     // A complete log of the framebuffer.
-    std::vector<std::string> FBHistory;
+    char [50] [161] FBHistory;
     int FBLogLoop(int startingValue);
     
     void menuPlantTree();
     void menuShowStats();
     void menuOptions();
+    
+    void highlightLine(int y);
 };

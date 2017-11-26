@@ -93,7 +93,7 @@ int display_manager::FBLogLoop(int startingValue)
     printw("Message history - Press q to return to the game.");
     int height = getmaxy(stdscr);
     move(0,1);
-    for (unsigned int i = startingValue; i < FBHistory.size(); i++) {
+    for (unsigned int i = startingValue; i < 50; i++) {
         int x; //discarded but whatever
         int y;
         getyx(stdscr, y, x);
@@ -104,11 +104,11 @@ int display_manager::FBLogLoop(int startingValue)
             return i;
         } else {
             move(0,y);
-            printw(FBHistory.at(i).c_str());
+            printw(FBHistory[i]);
             printw("\n");
         }
     }
-    return FBHistory.size();
+    return 50;
 }
 
 
@@ -167,10 +167,12 @@ int display_manager::drawIntro()
     }
     while ( c != ' ' );
     nodelay(stdscr, FALSE);
-    return drawMainMenu();
+    drawMainMenu();
+    return mainMenuLoop();
 }
 
-int display_manager::drawMainMenu()
+
+void display_manager::drawMainMenu()
 {
     clear();
     move(6,35);
@@ -188,6 +190,11 @@ int display_manager::drawMainMenu()
     printw("Plant a [t]ree");
     move(15,center);
     printw("[Q]uit the game");
+    
+}
+
+int display_manager::mainMenuLoop()
+{
     while (true) {
         switch (getch()) {
             case 'n':
@@ -206,11 +213,15 @@ int display_manager::drawMainMenu()
     }
 }
 
+
 void display_manager::menuOptions()
 {
     //load options file 
+    file_manager fm;
+    options opts = fm.loadOptions();
+    options* optsptr= &opts;
     
-    
+    optsptr->checkOptions();
     
     drawMainMenu();
 }
@@ -220,7 +231,6 @@ void display_manager::menuShowStats()
     //load stats file
     
     file_manager fm;
-    std::cerr << "file manager allocation complete" << std::endl;
     statistics stat = fm.loadStatistics();
     statistics* stats = &stat;
     std::cerr << "stats loaded" << std::endl;

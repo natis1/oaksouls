@@ -27,7 +27,10 @@
 file_manager::file_manager()
 {
     getDataPath();
-    getStatisticsPath();
+    statsPath = dataPath + "/globalstats";
+    optionsPath = dataPath + "/globaloptions";
+    savesPath =  dataPath + "/saves/";
+    makeDirectory(savesPath.c_str());
 }
 
 
@@ -58,28 +61,59 @@ statistics file_manager::loadStatistics()
     }
 }
 
+int file_manager::saveOptions(options opts)
+{
+    std::ofstream ofs(optionsPath, std::ios::binary);
+    ofs.write((char *)&opts, sizeof(opts));
+    
+    //TODO: Error checking
+    return 0;
+}
+
+
+options file_manager::loadOptions()
+{
+    struct stat s;
+        if ( stat(optionsPath.c_str(), &s) != 0) {
+        options blankOptions;
+        blankOptions.initOptions();
+        saveOptions(blankOptions);
+        return blankOptions;
+    } else {
+        options opts;
+        std::ifstream ifs(statsPath, std::ios::binary);
+        ifs.read((char *)&opts, sizeof(opts));
+        return opts;
+    }
+    
+}
+
+
 void file_manager::getDataPath()
 {
     dataPath = getenv("HOME");
     dataPath = dataPath + "/.local/share/oaksouls";
-    std::cerr << dataPath << " is current path" << std::endl;
+    makeDirectory(dataPath.c_str());
+}
+
+int file_manager::makeDirectory(const char* path)
+{
     struct stat s;
-    if ( stat(dataPath.c_str(), &s) != -1) {
+    int err = 0;
+    if ( stat(path, &s) != -1) {
         if (!S_ISDIR(s.st_mode)) {
-            std::cerr << dataPath << " is corrupted, cannot be read, or is not a directory. Error:" << stat(dataPath.c_str(), &s) << std::endl;
+            std::cerr << path << " is corrupted, cannot be read, or is not a directory. Error:" << stat(dataPath.c_str(), &s) << std::endl;
         }
     } else {
-        std::cerr << "Save directory not found, rebuilding." << std::endl;
-        int err = mkdir(dataPath.c_str(), 0775);
+        std::cerr << "Directory not found, rebuilding." << std::endl;
+        err = mkdir(path, 0775);
         if (err != 0) {
             std::cerr << "Unable to make save directory... for some reason" << std::endl;
         }
     }
+    return err;
+    
 }
 
-void file_manager::getStatisticsPath()
-{
-    statsPath = dataPath + "/globalstats";
-}
 
 
