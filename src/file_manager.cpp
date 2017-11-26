@@ -36,10 +36,8 @@ file_manager::file_manager()
 
 int file_manager::saveStatistics(statistics stats)
 {
-    std::cerr << "stat file location is " << statsPath << " and data file is " << dataPath << std::endl;
     std::ofstream ofs(statsPath, std::ios::binary);
     ofs.write((char *)&stats, sizeof(stats));
-    
     //TODO: Error checking
     return 0;
 }
