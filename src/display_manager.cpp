@@ -221,6 +221,12 @@ void display_manager::menuOptions()
     options opts = fm.loadOptions();
     options* optsptr= &opts;
     
+    std::vector<std::string> lines;
+    
+    lines.push_back("Variable 1 is x");
+    
+    //TODO: Figure out how to make a char* out of you. Or maybe just a vector, idc.
+    
     optsptr->checkOptions();
     
     drawMainMenu();
@@ -291,6 +297,14 @@ void display_manager::menuPlantTree()
     getch();
     drawMainMenu();
 }
+
+void display_manager::highlightLine(int y)
+{
+    
+    
+    
+}
+
 
 
 
