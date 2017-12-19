@@ -6,8 +6,9 @@ file(GLOB OAK_SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp"
 "${CMAKE_SOURCE_DIR}/src/*.hpp")
 
 add_executable(oaksouls "${OAK_SOURCES}")
-target_link_libraries(oaksouls ncurses tinfo)
 
-
+find_package(Curses REQUIRED)
+message("Curses Libraries are ${CURSES_LIBRARIES}.")
+target_link_libraries(oaksouls "${CURSES_LIBRARIES}")
 
 install(TARGETS oaksouls RUNTIME DESTINATION bin)
