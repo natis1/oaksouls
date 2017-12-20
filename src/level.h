@@ -20,11 +20,18 @@
 
 #include <vector>
 
+#define LEVEL_WIDTH 80
+#define LEVEL_HEIGHT 20
+
 class level
 {
 public:
-bool operator==(const level& other) const;
+    level(int type = 0, int difficulty = 1);
 protected:
-std::vector<std::vector<int>> tiles;
-
+    int tiles [LEVEL_HEIGHT] [LEVEL_WIDTH];
+    int type;
+    int difficulty;
+private:
+    // Build a level with two integers. Allows for potentially multiple kinds of dungeons.
+    void generateFloor();
 };
