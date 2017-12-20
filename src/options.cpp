@@ -24,7 +24,6 @@ void options::initOptions()
     ga_bufferPause = true;
     ga_bufferWait = 3000;
     ga_casualMode = false;
-    ga_highlightTraits = true;
     ga_trackAchievements = true;
     
     gr_bufferSize = 500;
@@ -33,6 +32,8 @@ void options::initOptions()
     gr_drawPlayerAttacks = true;
     gr_drawScreenEffects = true;
     gr_drawLightLevel = true;
+    gr_highlightTraits = true;
+
 }
 
 

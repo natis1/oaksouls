@@ -28,8 +28,6 @@ public:
 
     // Gameplay options.
     
-    // This option highlights traits by their origin: Green for Green Algae, red for Opisthokonts, blue for all other groups. Useful for some achievements
-    bool ga_highlightTraits;
     // This option enables save without quitting, and disables deleting saves on loading games. It also turns off achievement tracking.
     bool ga_allowScumming;
     // Is everything unlocked from the start? Disables achievement tracking.
@@ -54,6 +52,8 @@ public:
     bool gr_drawLightLevel;
     // Should a splash screen be displayed upon entering an area?
     bool gr_displaySplashScreens;
-    
+    // This option highlights traits by their origin: Green for Green Algae, red for Opisthokonts, blue for all other groups. Useful for some achievements
+    bool gr_highlightTraits;
+
     
 };
