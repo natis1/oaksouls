@@ -1,27 +1,22 @@
 /*
- * Implements formulas to generate levels for Oak Souls based on various math magics.
+ * This file defines some constants
  * Copyright (C) 2017  Eli Stone eli.stonium@gmail.com
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-#include "level.h"
 
-class level_gen
-{
-public:
-    void binarySpace();
-    int mapdata [LEVEL_HEIGHT] [LEVEL_WIDTH];
-};
+#pragma once
+#define LEVEL_WIDTH 80
+#define LEVEL_HEIGHT 20

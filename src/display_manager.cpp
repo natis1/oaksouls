@@ -43,7 +43,7 @@ void display_manager::cleanDisplay()
     endwin();    
 }
 
-
+/*
 void display_manager::drawFBLog()
 {
     if ( FBHistory.size() < 1 ) {
@@ -85,7 +85,7 @@ void display_manager::drawFBLog()
     
     nodelay(stdscr, FALSE);
 }
-
+*/
 
 int display_manager::FBLogLoop(int startingValue)
 {
@@ -203,10 +203,13 @@ int display_manager::mainMenuLoop()
                 return 2;
             case 'o':
                 menuOptions();
+                break;
             case 's':
                 menuShowStats();
+                break;
             case 't':
                 menuPlantTree();
+                break;
             case 'q':
                 return 6;
         }
@@ -222,13 +225,12 @@ void display_manager::menuOptions()
     options* optsptr= &opts;
     
     std::vector<std::string> lines;
-    
-    lines.push_back("Variable 1 is x");
+
     
     //TODO: Figure out how to make a char* out of you. Or maybe just a vector, idc.
     
     optsptr->checkOptions();
-    
+    getch();
     drawMainMenu();
 }
 

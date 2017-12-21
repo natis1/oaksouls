@@ -19,11 +19,8 @@
 #include "level_gen.h"
 #include "level_gen_tools/binary_tree.h"
 
-int *level_gen::binarySpace() {
-    int tiles [LEVEL_HEIGHT] [LEVEL_WIDTH];
-    
+void level_gen::binarySpace() {
     binary_tree tr(LEVEL_WIDTH, LEVEL_HEIGHT);
-    
     
     
 }

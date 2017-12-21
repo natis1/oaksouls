@@ -19,9 +19,8 @@
 #pragma once
 
 #include <vector>
+#include "level_gen_tools/level_gen_defines.h"
 
-#define LEVEL_WIDTH 80
-#define LEVEL_HEIGHT 20
 
 class level
 {

@@ -46,7 +46,7 @@ public:
     
 private:
     // A complete log of the framebuffer.
-    char [50] [161] FBHistory;
+    char FBHistory [50] [161];
     int FBLogLoop(int startingValue);
     
     void menuPlantTree();
