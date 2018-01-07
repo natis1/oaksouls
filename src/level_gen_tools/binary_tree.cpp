@@ -119,6 +119,7 @@ void binary_tree::node_build_loop(node *leaf)
                 mapdata [i] [point] = 1;
             }
             
+            
         }        
         
         
