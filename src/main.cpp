@@ -22,7 +22,6 @@
 #include <signal.h>
 #include <execinfo.h>
 
-
 void signal_cleanup(int sig) {
     std::cerr << "Recieved signal: " << sig << std::endl;
     
@@ -40,6 +39,18 @@ void signal_cleanup(int sig) {
     exit(sig);
 }
 
+void ctrl_c_cleanup(int sig) {
+    clear();
+    curs_set(1);
+    //TODO: Implement saving right here
+    endwin();
+    
+    std::cout << "Ctrl+c hit. Saving and exiting" << std::endl;
+    exit(sig);
+    
+    
+}
+
 int main(int argc, char **argv) {
     std::cout << "Hello, world!" << std::endl;
     display_manager display;
@@ -50,7 +61,7 @@ int main(int argc, char **argv) {
         return -1;
     }
     // Recover from intentional killing and also segfaults in case I messed up my code
-    signal(SIGINT,signal_cleanup);
+    signal(SIGINT,ctrl_c_cleanup);
     signal(SIGKILL,signal_cleanup);
     signal(SIGSEGV,signal_cleanup);
     

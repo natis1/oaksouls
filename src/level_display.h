@@ -16,14 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LEVEL_DISPLAY_H
-#define LEVEL_DISPLAY_H
+#pragma once
 
 /**
  * @todo write docs
  */
 class level_display
 {
+public:
+    void draw_level();
+    void draw_items();
+    void draw_stats();
+    void draw_messages();
+    
 };
-
-#endif // LEVEL_DISPLAY_H
