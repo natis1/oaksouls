@@ -1,6 +1,6 @@
 /*
- * It manages an options file I guess idk.
- * Copyright (C) 2017  Eli Stone  eli.stonium@gmail.com
+ * Oaksouls ~ A difficult roguelike about a	tree spirit.
+ * Copyright (C) 2018  Eli Stone eli.stonium+oak@gmail.com
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
