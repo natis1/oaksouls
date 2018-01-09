@@ -16,12 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-#include "level.h"
+#include "level_gen.h"
 
-class level_gen
-{
-public:
-    void binarySpace();
-    int mapdata [LEVEL_HEIGHT] [LEVEL_WIDTH];
-};
+void level_gen::binarySpace() {
+    binary_tree tr = binary_tree();
+    mapdata = tr.mapdata;
+}

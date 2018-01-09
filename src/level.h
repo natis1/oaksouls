@@ -20,6 +20,8 @@
 
 #include <vector>
 #include "level_gen_tools/level_gen_defines.h"
+#include "level_display.h"
+#include "level_gen_tools/level_gen.h"
 
 
 class level
@@ -27,7 +29,7 @@ class level
 public:
     level(int type = 0, int difficulty = 1);
 protected:
-    int tiles [LEVEL_HEIGHT] [LEVEL_WIDTH];
+    std::vector<std::vector<int>> *tiles;
     int type;
     int difficulty;
 private:

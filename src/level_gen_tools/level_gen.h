@@ -16,11 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "level_gen.h"
-#include "level_gen_tools/binary_tree.h"
+#pragma once
+#include <vector>
+#include "binary_tree.h"
 
-void level_gen::binarySpace() {
-    binary_tree tr(LEVEL_WIDTH, LEVEL_HEIGHT);
+class level_gen
+{
+public:
+    void binarySpace();
+    std::vector<std::vector<int>> mapdata;
     
     
-}
+private:
+    void cleanup();
+};

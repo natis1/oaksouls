@@ -18,3 +18,48 @@
 
 #include "level_display.h"
 
+void level_display::draw_level(std::vector<std::vector<int>> *tiles)
+{
+    move(2,0);
+    for (int i = 0; i < LEVEL_HEIGHT; i++) {
+        char c [LEVEL_WIDTH + 1];
+        for (int j = 0; j < LEVEL_WIDTH; j++) {
+            if (tiles->at(i).at(j) == 0) {
+                c [j] = 35;
+            } else {
+                c [j] = 45 + tiles->at(i).at(j);
+            }
+        }
+        c [LEVEL_WIDTH] = '\0';
+        printw(c);
+        move(i+3,0);
+    }
+    
+    
+    
+}
+
+
+//For items on the level not the level itself.
+void level_display::draw_items()
+{
+    
+    
+    
+}
+
+
+void level_display::draw_messages()
+{
+    
+    
+    
+}
+
+
+void level_display::draw_stats()
+{
+    
+    
+    
+}

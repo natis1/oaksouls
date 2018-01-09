@@ -21,9 +21,22 @@
 #include "display_manager.h"
 #include <signal.h>
 #include <execinfo.h>
+#include "level.h"
 
 void signal_cleanup(int sig) {
+    curs_set(1);
+    clear();
+    endwin();
+    
     std::cerr << "Recieved signal: " << sig << std::endl;
+    if (sig == SIGSEGV) {
+        std::cerr << "Segmentation Fault!" << std::endl;
+        
+    }
+    
+    if (sig == SIGABRT) {
+        std::cerr << "Aborted!" << std::endl;
+    }
     
     void *buffer[300];
     int j, k;
@@ -33,9 +46,7 @@ void signal_cleanup(int sig) {
         std::cerr << strings[j] << std::endl;
     }
     
-    curs_set(1);
-    clear();
-    endwin();
+    
     exit(sig);
 }
 
@@ -63,6 +74,7 @@ int main(int argc, char **argv) {
     // Recover from intentional killing and also segfaults in case I messed up my code
     signal(SIGINT,ctrl_c_cleanup);
     signal(SIGKILL,signal_cleanup);
+    signal(SIGABRT,signal_cleanup);
     signal(SIGSEGV,signal_cleanup);
     
     int result = display.drawIntro();
@@ -70,6 +82,13 @@ int main(int argc, char **argv) {
     if (result == 1) {
         //code to start and then save a new game
         savefile = "oak.dat";
+        while (true) {
+            level(1, 1);
+            
+        }
+        std::cerr << "Can anyone hear me?" << std::endl;
+        getch();
+        
     } else if (result == 6) {
         display.cleanDisplay();
         return 0;

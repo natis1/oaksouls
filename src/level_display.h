@@ -18,13 +18,23 @@
 
 #pragma once
 
+#include <curses.h>
+#include <vector>
+#include "level_gen_tools/level_gen_defines.h"
+
 /**
- * @todo write docs
+ * How this is going to work:
+ * 
+ * Top two lines for stats
+ * next 20 lines for map, status, etc.
+ * Bottom 2+ lines for message log
+ * 
+ * 
  */
 class level_display
 {
 public:
-    void draw_level();
+    void draw_level(std::vector<std::vector<int>> *tiles);
     void draw_items();
     void draw_stats();
     void draw_messages();

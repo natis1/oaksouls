@@ -18,6 +18,7 @@
 
 #pragma once
 #include <random>
+#include <vector>
 #include "level_gen_defines.h"
 
 struct node {
@@ -34,16 +35,15 @@ public:
     /**
      * Default constructor
      */
-    binary_tree(int y2, int x2);
+    binary_tree();
 
     /**
      * Destructor
      */
-    ~binary_tree();
-    int mapdata [LEVEL_HEIGHT] [LEVEL_WIDTH];
+    std::vector<std::vector<int>> mapdata;
     
 private:
-    void add_node(int y1, int y2, int x1, int x2, node *leaf);
+    node *add_node(int y1, int y2, int x1, int x2);
     void delete_tree();
     void delete_node(node *leaf);
     void node_build_loop(node *leaf);
