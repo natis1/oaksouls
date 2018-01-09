@@ -21,4 +21,20 @@
 void level_gen::binarySpace() {
     binary_tree tr = binary_tree();
     mapdata = tr.mapdata;
+    cleanup();
+}
+
+void level_gen::cleanup()
+{
+    
+    // make edges walls
+    for (int i = 0; i < LEVEL_HEIGHT; i++) {
+        mapdata.at(i).at(0) = 0;
+        mapdata.at(i).at(LEVEL_WIDTH - 1) = 0;
+    }
+    for (int j = 0; j < LEVEL_WIDTH; j++) {
+        mapdata.at(0).at(j) = 0;
+        mapdata.at(LEVEL_HEIGHT - 1).at(j) = 0;
+    }
+    
 }
