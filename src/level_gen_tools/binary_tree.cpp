@@ -22,9 +22,10 @@
 
 #include <curses.h>
 
-#define MAX_ROOM_VOLUME 100
+#define MAX_ROOM_VOLUME 75
 #define MAX_SPLIT_AMT 0.8
-#define WALL_THICKNESS 2
+#define MIN_WALL_THICKNESS 1
+#define MAX_WALL_THICKNESS 3
 
 binary_tree::binary_tree()
 {
@@ -33,7 +34,9 @@ binary_tree::binary_tree()
         mapdata.push_back(std::vector<int> (LEVEL_WIDTH, 0));
     }
     root = nullptr;
-    root = add_node(0, LEVEL_HEIGHT, 0, LEVEL_WIDTH);
+    
+    // In theory this stops impossible to access rooms from generating. Hopefully.
+    root = add_node(1, LEVEL_HEIGHT - 1, 1, LEVEL_WIDTH - 1);
     node_build_loop(root);
     
 }
@@ -58,6 +61,7 @@ void binary_tree::node_build_loop(node *leaf)
             node_build_loop(leaf->left);
             node_build_loop(leaf->right);
             
+            
             //connect leaves. Choose a random y value
             std::uniform_int_distribution<int> conpts(leaf->y1, leaf->y2 - 1);
             bool goodpt1;
@@ -81,7 +85,9 @@ void binary_tree::node_build_loop(node *leaf)
                 }
             } while (!goodpt1 && !goodpt2);
             
-            for (int i = leaf->x1 + WALL_THICKNESS; i < leaf->x2 - WALL_THICKNESS; i++) {
+            
+            
+            for (int i = leaf->x1 + MIN_WALL_THICKNESS; i < leaf->x2 - MAX_WALL_THICKNESS; i++) {
                 mapdata.at(point).at(i) = 1;
             }
             
@@ -95,7 +101,9 @@ void binary_tree::node_build_loop(node *leaf)
             node_build_loop(leaf->left);
             node_build_loop(leaf->right);
             
+            
             //connect leaves. Choose a random x value
+
             std::uniform_int_distribution<int> conpts(leaf->x1, leaf->x2 - 1);
             bool goodpt1;
             bool goodpt2;
@@ -117,7 +125,10 @@ void binary_tree::node_build_loop(node *leaf)
                     }
                 }
             } while (!goodpt1 && !goodpt2);
-            for (int i = leaf->y1 + WALL_THICKNESS; i < leaf->y2 - WALL_THICKNESS; i++) {
+            
+            
+            
+            for (int i = leaf->y1 + MIN_WALL_THICKNESS; i < leaf->y2 - MAX_WALL_THICKNESS; i++) {
                 mapdata.at(i).at(point) = 1;
             }
             
@@ -129,6 +140,7 @@ void binary_tree::node_build_loop(node *leaf)
     } else {
         // Map code
         
+        // Why not just segfault now and save us all some debugging time later?
         if (leaf->x1 > leaf->x2 || leaf->y1 > leaf->y2 || leaf->x2 > LEVEL_WIDTH || leaf->y2 > LEVEL_HEIGHT) {
             clear();
             curs_set(1);
@@ -137,15 +149,14 @@ void binary_tree::node_build_loop(node *leaf)
             
         }
         
-        // Tunnel should never be true but if it is then
-        bool tunnel = (((leaf->x1 + WALL_THICKNESS * 2 ) >= leaf->x2) || ((leaf->y1 + WALL_THICKNESS * 2) >= leaf->y2));
+        // Tunnel should almost never be true but if it is then
+        std::uniform_int_distribution<int> thicknesses( MIN_WALL_THICKNESS, MAX_WALL_THICKNESS);
+        int thickness = thicknesses(rng);
+        bool tunnel = (((leaf->x1 + thickness * 2 ) >= leaf->x2) || ((leaf->y1 + thickness * 2) >= leaf->y2));
         for (int i = leaf->x1;  i < leaf->x2; i++) {
             for (int j = leaf->y1; j < leaf->y2; j++) {
-                if (tunnel || ((leaf->x1 + WALL_THICKNESS <= i) && (leaf->x2 - WALL_THICKNESS >= i) && (leaf->y1 + WALL_THICKNESS <= j) && (leaf->y2 - WALL_THICKNESS >= j))) {
+                if (tunnel || ((leaf->x1 + thickness <= i) && (leaf->x2 - thickness >= i) && (leaf->y1 + thickness <= j) && (leaf->y2 - thickness >= j))) {
                     mapdata.at(j).at(i) = 1;
-                    
-                } else {
-                    mapdata.at(j).at(i) = 0;
                 }
             }
         }
