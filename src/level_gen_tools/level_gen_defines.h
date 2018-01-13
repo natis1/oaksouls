@@ -20,3 +20,10 @@
 #pragma once
 #define LEVEL_WIDTH 80
 #define LEVEL_HEIGHT 20
+
+
+// constants for binary tree stage1 method
+#define BINARY_TREE_MAX_ROOM_VOLUME 75
+#define BINARY_TREE_MAX_SPLIT_AMT 0.8
+#define BINARY_TREE_MIN_WALL_THICKNESS 1
+#define BINARY_TREE_MAX_WALL_THICKNESS 3

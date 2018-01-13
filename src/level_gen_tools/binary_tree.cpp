@@ -19,13 +19,7 @@
 #include "binary_tree.h"
 #include <stddef.h>
 #include <random>
-
 #include <curses.h>
-
-#define MAX_ROOM_VOLUME 75
-#define MAX_SPLIT_AMT 0.8
-#define MIN_WALL_THICKNESS 1
-#define MAX_WALL_THICKNESS 3
 
 binary_tree::binary_tree()
 {
@@ -48,11 +42,11 @@ void binary_tree::node_build_loop(node *leaf)
     
     int yrange = leaf->y2 - leaf->y1;
     int xrange = leaf->x2 - leaf->x1;
-    if (xrange * yrange >= MAX_ROOM_VOLUME) {
+    if (xrange * yrange >= BINARY_TREE_MAX_ROOM_VOLUME) {
         
         // Splits vertically
         if (xrange >= yrange) {
-            std::uniform_int_distribution<int> uni( (int)(xrange * (1-MAX_SPLIT_AMT)) + leaf->x1, (xrange * MAX_SPLIT_AMT) + leaf->x1 - 1);
+            std::uniform_int_distribution<int> uni( (int)(xrange * (1-BINARY_TREE_MAX_SPLIT_AMT)) + leaf->x1, (xrange * BINARY_TREE_MAX_SPLIT_AMT) + leaf->x1 - 1);
             int newval = uni(rng);
             
             // Starts at the old x1 and goes until hitting the new value
@@ -87,12 +81,12 @@ void binary_tree::node_build_loop(node *leaf)
             
             
             
-            for (int i = leaf->x1 + MIN_WALL_THICKNESS; i < leaf->x2 - MAX_WALL_THICKNESS; i++) {
+            for (int i = leaf->x1 + BINARY_TREE_MIN_WALL_THICKNESS; i < leaf->x2 - BINARY_TREE_MAX_WALL_THICKNESS; i++) {
                 mapdata.at(point).at(i) = 1;
             }
             
         } else {
-            std::uniform_int_distribution<int> uni( (int)(yrange * (1-MAX_SPLIT_AMT)) + leaf->y1, (yrange * MAX_SPLIT_AMT) + leaf->y1 - 1);
+            std::uniform_int_distribution<int> uni( (int)(yrange * (1-BINARY_TREE_MAX_SPLIT_AMT)) + leaf->y1, (yrange * BINARY_TREE_MAX_SPLIT_AMT) + leaf->y1 - 1);
             int newval = uni(rng);
             
             // Starts at the old x1 and goes until hitting the new value
@@ -128,7 +122,7 @@ void binary_tree::node_build_loop(node *leaf)
             
             
             
-            for (int i = leaf->y1 + MIN_WALL_THICKNESS; i < leaf->y2 - MAX_WALL_THICKNESS; i++) {
+            for (int i = leaf->y1 + BINARY_TREE_MIN_WALL_THICKNESS; i < leaf->y2 - BINARY_TREE_MAX_WALL_THICKNESS; i++) {
                 mapdata.at(i).at(point) = 1;
             }
             
@@ -150,7 +144,7 @@ void binary_tree::node_build_loop(node *leaf)
         }
         
         // Tunnel should almost never be true but if it is then
-        std::uniform_int_distribution<int> thicknesses( MIN_WALL_THICKNESS, MAX_WALL_THICKNESS);
+        std::uniform_int_distribution<int> thicknesses( BINARY_TREE_MIN_WALL_THICKNESS, BINARY_TREE_MAX_WALL_THICKNESS);
         int thickness = thicknesses(rng);
         bool tunnel = (((leaf->x1 + thickness * 2 ) >= leaf->x2) || ((leaf->y1 + thickness * 2) >= leaf->y2));
         for (int i = leaf->x1;  i < leaf->x2; i++) {
