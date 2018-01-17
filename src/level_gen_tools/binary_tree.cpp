@@ -28,7 +28,6 @@ binary_tree::binary_tree()
         mapdata.push_back(std::vector<int> (LEVEL_WIDTH, 0));
     }
     root = nullptr;
-    
     // In theory this stops impossible to access rooms from generating. Hopefully.
     root = add_node(1, LEVEL_HEIGHT - 1, 1, LEVEL_WIDTH - 1);
     node_build_loop(root);
@@ -54,35 +53,37 @@ void binary_tree::node_build_loop(node *leaf)
             leaf->right = add_node(leaf->y1, leaf->y2, newval + 1, leaf->x2);
             node_build_loop(leaf->left);
             node_build_loop(leaf->right);
-            
-            
             //connect leaves. Choose a random y value
             std::uniform_int_distribution<int> conpts(leaf->y1, leaf->y2 - 1);
-            bool goodpt1;
-            bool goodpt2;
+            int goodpt1;
+            int goodpt2;
             int point;
+            int tries = BINARY_TREE_ROOM_CONNECT_TRIES;
             do {
-                goodpt1 = false;
-                goodpt2 = false;
+                goodpt1 = -1;
+                goodpt2 = -1;
                 point = conpts(rng);
                 for (int i = leaf->left->x1; i < leaf->left->x2; i++){
-                    if (mapdata.at(point).at(i) == 1) {
-                        goodpt1 = true;
+                    if (mapdata.at(point).at(i) != 0) {
+                        goodpt1 = i;
                         break;
                     }
                 }
                 for (int i = leaf->right->x1; i < leaf->right->x2; i++){
-                    if (mapdata.at(point).at(i) == 1) {
-                        goodpt2 = true;
+                    if (mapdata.at(point).at(i) != 0) {
+                        goodpt2 = i;
                         break;
                     }
                 }
-            } while (!goodpt1 && !goodpt2);
+                tries--;
+            } while ((goodpt1 == -1 || goodpt2 == -1) && tries > 0 );
             
-            
-            
-            for (int i = leaf->x1 + BINARY_TREE_MIN_WALL_THICKNESS; i < leaf->x2 - BINARY_TREE_MAX_WALL_THICKNESS; i++) {
-                mapdata.at(point).at(i) = 1;
+            if (tries > 0) {
+                for (int i = goodpt1; i < goodpt2 + 1; i++) {
+                    mapdata.at(point).at(i) = 2;
+                }
+            } else {
+                //std::cerr << "Unable to build connection" << std::endl;
             }
             
         } else {
@@ -94,39 +95,39 @@ void binary_tree::node_build_loop(node *leaf)
             leaf->right = add_node(newval + 1, leaf->y2, leaf->x1, leaf->x2);
             node_build_loop(leaf->left);
             node_build_loop(leaf->right);
-            
-            
             //connect leaves. Choose a random x value
 
             std::uniform_int_distribution<int> conpts(leaf->x1, leaf->x2 - 1);
-            bool goodpt1;
-            bool goodpt2;
+            int goodpt1;
+            int goodpt2;
             int point;
+            int tries = BINARY_TREE_ROOM_CONNECT_TRIES;
             do {
                 point = conpts(rng);
-                goodpt1 = false;
-                goodpt2 = false;
+                goodpt1 = -1;
+                goodpt2 = -1;
                 for (int i = leaf->left->y1; i < leaf->left->y2; i++){
-                    if (mapdata.at(i).at(point) == 1) {
-                        goodpt1 = true;
+                    if (mapdata.at(i).at(point) != 0) {
+                        goodpt1 = i;
                         break;
                     }
                 }
                 for (int i = leaf->right->y1; i < leaf->right->y2; i++){
-                    if (mapdata.at(i).at(point) == 1) {
-                        goodpt2 = true;
+                    if (mapdata.at(i).at(point) != 0) {
+                        goodpt2 = i;
                         break;
                     }
                 }
-            } while (!goodpt1 && !goodpt2);
+                tries--;
+            } while ((goodpt1 == -1 || goodpt2 == -1) && tries > 0 );
             
-            
-            
-            for (int i = leaf->y1 + BINARY_TREE_MIN_WALL_THICKNESS; i < leaf->y2 - BINARY_TREE_MAX_WALL_THICKNESS; i++) {
-                mapdata.at(i).at(point) = 1;
+            if (tries > 0) {
+                for (int i = goodpt1; i < goodpt2 + 1; i++) {
+                    mapdata.at(i).at(point) = 2;
+                }
+            } else {
+                //std::cerr << "Unable to build connection" << std::endl;
             }
-            
-            
         }        
         
         
@@ -149,7 +150,10 @@ void binary_tree::node_build_loop(node *leaf)
         bool tunnel = (((leaf->x1 + thickness * 2 ) >= leaf->x2) || ((leaf->y1 + thickness * 2) >= leaf->y2));
         for (int i = leaf->x1;  i < leaf->x2; i++) {
             for (int j = leaf->y1; j < leaf->y2; j++) {
-                if (tunnel || ((leaf->x1 + thickness <= i) && (leaf->x2 - thickness >= i) && (leaf->y1 + thickness <= j) && (leaf->y2 - thickness >= j))) {
+                if (tunnel) {
+                    mapdata.at(j).at(i) = 3;
+                }
+                else if ((leaf->x1 + thickness <= i) && (leaf->x2 - thickness >= i) && (leaf->y1 + thickness <= j) && (leaf->y2 - thickness >= j)) {
                     mapdata.at(j).at(i) = 1;
                 }
             }
@@ -184,4 +188,18 @@ void binary_tree::delete_node(node* leaf)
     free(leaf);
 }
 
+int binary_tree::adjacentPoints(int y, int x) {
+    int pts = 0;
+    for (int i = (y - 1); i < (y + 2); i++) {
+        for (int j = (x - 1); j < (x + 2); j++) {
+            if ( inBounds(i, j) && (i != y && x != j) && mapdata.at(i).at(j) != 0) {
+                pts++;
+            }
+        }
+    }
+    return pts;
+}
 
+bool binary_tree::inBounds(int y, int x) {
+    return ( (y >= 0 && y < LEVEL_HEIGHT) && (x >= 0 && x < LEVEL_WIDTH));
+}

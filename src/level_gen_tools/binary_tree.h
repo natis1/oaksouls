@@ -47,5 +47,8 @@ private:
     void delete_tree();
     void delete_node(node *leaf);
     void node_build_loop(node *leaf);
+    int adjacentPoints(int y, int x);
+    bool inBounds(int y, int x);
+    bool isHallway(int y, int x);
     node *root;
 };
