@@ -203,8 +203,3 @@ int binary_tree::adjacentPoints(int y, int x) {
 bool binary_tree::inBounds(int y, int x) {
     return ( (y >= 0 && y < LEVEL_HEIGHT) && (x >= 0 && x < LEVEL_WIDTH));
 }
-
-bool binary_tree::isHallway(int y, int x) {
-    
-    
-}
