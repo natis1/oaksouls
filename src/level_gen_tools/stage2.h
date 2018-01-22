@@ -34,9 +34,8 @@ public:
     
     
 private:
+    void hallwayScan();
     bool isHallway(int y, int x);
     void smartDoorGen();
-    void smartDoorGen1();
     void doorGen();
-    void doorGen1();
 };

@@ -22,16 +22,38 @@
 stage2::stage2(std::vector<std::vector<int> >* mapdata)
 {
     this->mapdata = mapdata;
+    if (LEVEL_GEN_OPTIMIZATION <= 1) hallwayScan(); 
+    
     if (STAGE2_SMART_DOORS) {
-        if (LEVEL_GEN_OPTIMIZATION >= 1) smartDoorGen1();
-        else smartDoorGen();
+        smartDoorGen();
     } else {
-        if (LEVEL_GEN_OPTIMIZATION >= 1) doorGen1();
-        else doorGen();
+        doorGen();
     }
     
     
 }
+
+void stage2::hallwayScan()
+{
+    if (LEVEL_GEN_OPTIMIZATION == 0) {
+        for (int i = 1; i < LEVEL_HEIGHT - 1; i++) {
+            for (int j = 1; j < LEVEL_WIDTH - 1; j++) {
+                if (mapdata->at(i).at(j) >= FLOOR && isHallway(i, j)) {
+                    mapdata->at(i).at(j) = HALL;
+                }
+            }
+        }
+    } else {
+        for (int i = 1; i < LEVEL_HEIGHT - 1; i++) {
+            for (int j = 1; j < LEVEL_WIDTH - 1; j++) {
+                if (mapdata->at(i).at(j) >= POSSIBLE_HALL && isHallway(i, j)) {
+                    mapdata->at(i).at(j) = HALL;
+                }
+            }
+        }
+    }
+}
+
 
 
 bool stage2::isHallway(int y, int x)
