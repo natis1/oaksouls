@@ -17,37 +17,26 @@
  */
 
 #pragma once
-#include <random>
+
 #include <vector>
 #include "level_gen_defines.h"
+#include <random>
 
-struct node {
-    int x1;
-    int x2;
-    int y1;
-    int y2;
-    node *left;
-    node *right;
-};
 
-class binary_tree {
+/**
+ * @todo write docs
+ */
+class stage2
+{
 public:
-    /**
-     * Default constructor
-     */
-    binary_tree();
-
-    /**
-     * Destructor
-     */
-    std::vector<std::vector<int>> mapdata;
+    stage2(std::vector<std::vector<int>> *mapdata);
+    std::vector<std::vector<int>> *mapdata;
+    
     
 private:
-    node *add_node(int y1, int y2, int x1, int x2);
-    void delete_tree();
-    void delete_node(node *leaf);
-    void node_build_loop(node *leaf);
-    int adjacentPoints(int y, int x);
-    bool inBounds(int y, int x);
-    node *root;
+    bool isHallway(int y, int x);
+    void smartDoorGen();
+    void smartDoorGen1();
+    void doorGen();
+    void doorGen1();
 };
