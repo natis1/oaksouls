@@ -19,6 +19,8 @@
 #pragma once
 #include <vector>
 #include "binary_tree.h"
+#include "level_gen_defines.h"
+#include "stage2.h"
 
 class level_gen
 {

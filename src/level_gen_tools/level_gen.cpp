@@ -22,6 +22,9 @@ void level_gen::binarySpace() {
     binary_tree tr = binary_tree();
     mapdata = tr.mapdata;
     cleanup();
+    stage2 s2 (&mapdata);
+    
+    
 }
 
 void level_gen::cleanup()
@@ -29,12 +32,12 @@ void level_gen::cleanup()
     
     // make edges walls
     for (int i = 0; i < LEVEL_HEIGHT; i++) {
-        mapdata.at(i).at(0) = 0;
-        mapdata.at(i).at(LEVEL_WIDTH - 1) = 0;
+        mapdata.at(i).at(0) = UNBREAKABLE_WALL;
+        mapdata.at(i).at(LEVEL_WIDTH - 1) = UNBREAKABLE_WALL;
     }
     for (int j = 0; j < LEVEL_WIDTH; j++) {
-        mapdata.at(0).at(j) = 0;
-        mapdata.at(LEVEL_HEIGHT - 1).at(j) = 0;
+        mapdata.at(0).at(j) = UNBREAKABLE_WALL;
+        mapdata.at(LEVEL_HEIGHT - 1).at(j) = UNBREAKABLE_WALL;
     }
     
 }

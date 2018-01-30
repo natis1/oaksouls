@@ -35,12 +35,12 @@ stage2::stage2(std::vector<std::vector<int> >* mapdata)
 
 void stage2::hallwayScan()
 {
-    if (LEVEL_GEN_OPTIMIZATION == 0) {
+    if (LEVEL_GEN_OPTIMIZATION <= 0) {
         for (int i = 1; i < LEVEL_HEIGHT - 1; i++) {
             for (int j = 1; j < LEVEL_WIDTH - 1; j++) {
                 if (mapdata->at(i).at(j) >= FLOOR && isHallway(i, j)) {
                     mapdata->at(i).at(j) = HALL;
-                } else {
+                } else if (mapdata->at(i).at(j) > FLOOR) {
                     mapdata->at(i).at(j) = FLOOR;
                 }
             }
@@ -50,7 +50,7 @@ void stage2::hallwayScan()
             for (int j = 1; j < LEVEL_WIDTH - 1; j++) {
                 if (mapdata->at(i).at(j) >= POSSIBLE_HALL && isHallway(i, j)) {
                     mapdata->at(i).at(j) = HALL;
-                } else {
+                } else if (mapdata->at(i).at(j) > FLOOR) {
                     mapdata->at(i).at(j) = FLOOR;
                 }
             }
@@ -62,8 +62,8 @@ void stage2::hallwayScan()
 
 bool stage2::isHallway(int y, int x)
 {
-    return ( (mapdata->at(y-1).at(x) != 0 && mapdata->at(y+1).at(x) != 0 && mapdata->at(y).at(x-1) == 0 && mapdata->at(y).at(x+1) == 0) ||
-             (mapdata->at(y-1).at(x) == 0 && mapdata->at(y+1).at(x) == 0 && mapdata->at(y).at(x-1) != 0 && mapdata->at(y).at(x+1) != 0));
+    return ( (mapdata->at(y-1).at(x) >= FLOOR && mapdata->at(y+1).at(x) >= FLOOR && mapdata->at(y).at(x-1) < FLOOR && mapdata->at(y).at(x+1) < FLOOR) ||
+             (mapdata->at(y-1).at(x) < FLOOR && mapdata->at(y+1).at(x) < FLOOR && mapdata->at(y).at(x-1) >= FLOOR && mapdata->at(y).at(x+1) >= FLOOR));
 }
 
 void stage2::doorGen()
