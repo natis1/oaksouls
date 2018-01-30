@@ -92,19 +92,15 @@ void stage2::smartDoorGen()
     std::random_device rd;
     std::mt19937 rng(rd());
 //    std::uniform_int_distribution<int> dist(0, 9);
+    std::vector<hallway> h = findAllHallways();
     
-    for (int i = 1; i < LEVEL_HEIGHT - 1; i++) {
-        for (int j = 1; j < LEVEL_WIDTH - 1; j++) {
-            if (mapdata->at(i).at(j) >= FLOOR && isHallway(i, j)) {
-                mapdata->at(i).at(j) = HALL;
-                
-                if ((double) rand() / (RAND_MAX) < STAGE2_DOOR_CHANCE) {
-                    mapdata->at(i).at(j) = DOOR;
-                }
-                
-            } else {
-                mapdata->at(i).at(j) = FLOOR;
-            }
+    for (uint i = 0; i < h.size(); i++) {
+        if ((double) rand() / (RAND_MAX) < STAGE2_DOOR_CHANCE) {
+            int numpoints = h.at(i).p.size();
+            std::uniform_int_distribution<int> uni(1, numpoints);
+            int ptnum = uni(rng) - 1;
+            // uhhhhhhh, wtf was I thinking with these var names
+            mapdata->at(h.at(i).p.at(ptnum).y).at(h.at(i).p.at(ptnum).x) = DOOR;
             
         }
     }
@@ -114,6 +110,10 @@ void stage2::smartDoorGen()
 hallway stage2::findHallway(int y, int x)
 {
     hallway h;
+    h.minY = INT32_MAX;
+    h.maxY = 0;
+    h.minX = INT32_MAX;
+    h.maxX = 0;
 //     point startingPt;
 //     startingPt.y = y; startingPt.x = x;
     h.p.push_back({y, x});
@@ -123,7 +123,7 @@ hallway stage2::findHallway(int y, int x)
     // It just doesn't seem right what I'm doing.
     
     while (counter < h.p.size()) {
-        bool l,r,u,d = false;
+        bool l = false; bool r = false; bool u = false; bool d = false;
         
         // Ok technically this is undefined behavior if you allow the edges of your map to be halls. Then it should rightfully segfault.
         if (mapdata->at(h.p.at(counter).y).at(h.p.at(counter).x - 1) == HALL) {
@@ -145,7 +145,7 @@ hallway stage2::findHallway(int y, int x)
             for (uint i = 0; i < h.p.size(); i++) {
                 point p = h.p.at(i);
                 
-                // shit code that probably works.
+                // shit code that probably works. Lol nope.
                 if (d && p.y == h.p.at(counter).y + 1 && p.x == h.p.at(counter).x ) d = false;
                 if (u && p.y == h.p.at(counter).y - 1 && p.x == h.p.at(counter).x ) u = false;
                 if (r && p.x == h.p.at(counter).x + 1 && p.y == h.p.at(counter).y ) r = false;
@@ -153,12 +153,24 @@ hallway stage2::findHallway(int y, int x)
             }
         }
         if (d) h.p.push_back({(h.p.at(counter).y + 1), h.p.at(counter).x});
+        
         if (u) h.p.push_back({(h.p.at(counter).y - 1), h.p.at(counter).x});
+        
         if (r) h.p.push_back({h.p.at(counter).y, (h.p.at(counter).x + 1)});
-        if (l) h.p.push_back({h.p.at(counter).y, (h.p.at(counter).x + 1)});
+        
+        if (l) h.p.push_back({h.p.at(counter).y, (h.p.at(counter).x - 1)});
         
         counter++;
     }
+    
+    // This might be another stupid optimization. idk anymore. send help.
+    for (uint i = 0; i < h.p.size(); i++) {
+        if (h.minY > h.p.at(i).y) h.minY = h.p.at(i).y;
+        if (h.maxY < h.p.at(i).y) h.maxY = h.p.at(i).y;
+        if (h.minX > h.p.at(i).x) h.minX = h.p.at(i).x;
+        if (h.maxX > h.p.at(i).x) h.maxX = h.p.at(i).x;
+    }
+    
     return h;
 }
 
