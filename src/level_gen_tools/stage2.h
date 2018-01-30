@@ -22,6 +22,19 @@
 #include "level_gen_defines.h"
 #include <random>
 
+struct point {
+    int y;
+    int x;
+};
+
+struct hallway {
+    std::vector<point> p;
+    
+    int minX;
+    int minY;
+    int maxX;
+    int maxY;
+};
 
 /**
  * @todo write docs
@@ -35,6 +48,8 @@ public:
     
 private:
     void hallwayScan();
+    hallway findHallway(int y, int x);
+    std::vector<hallway> findAllHallways();
     bool isHallway(int y, int x);
     void smartDoorGen();
     void doorGen();

@@ -40,6 +40,8 @@ void stage2::hallwayScan()
             for (int j = 1; j < LEVEL_WIDTH - 1; j++) {
                 if (mapdata->at(i).at(j) >= FLOOR && isHallway(i, j)) {
                     mapdata->at(i).at(j) = HALL;
+                } else {
+                    mapdata->at(i).at(j) = FLOOR;
                 }
             }
         }
@@ -48,6 +50,8 @@ void stage2::hallwayScan()
             for (int j = 1; j < LEVEL_WIDTH - 1; j++) {
                 if (mapdata->at(i).at(j) >= POSSIBLE_HALL && isHallway(i, j)) {
                     mapdata->at(i).at(j) = HALL;
+                } else {
+                    mapdata->at(i).at(j) = FLOOR;
                 }
             }
         }
@@ -66,17 +70,11 @@ void stage2::doorGen()
 {
     for (int i = 1; i < LEVEL_HEIGHT - 1; i++) {
         for (int j = 1; j < LEVEL_WIDTH - 1; j++) {
-            if (mapdata->at(i).at(j) >= FLOOR && isHallway(i, j)) {
-                mapdata->at(i).at(j) = HALL;
-                
+            if (mapdata->at(i).at(j) == HALL) {                
                 if ((double) rand() / (RAND_MAX) < STAGE2_DOOR_CHANCE) {
                     mapdata->at(i).at(j) = DOOR;
                 }
-                
-            } else {
-                mapdata->at(i).at(j) = FLOOR;
             }
-            
         }
     }
     
@@ -111,4 +109,90 @@ void stage2::smartDoorGen()
         }
     }
     
+}
+
+hallway stage2::findHallway(int y, int x)
+{
+    hallway h;
+//     point startingPt;
+//     startingPt.y = y; startingPt.x = x;
+    h.p.push_back({y, x});
+    uint counter = 0;
+    
+    // I'm really worried about this part producing undefined behavior when optimized.
+    // It just doesn't seem right what I'm doing.
+    
+    while (counter < h.p.size()) {
+        bool l,r,u,d = false;
+        
+        // Ok technically this is undefined behavior if you allow the edges of your map to be halls. Then it should rightfully segfault.
+        if (mapdata->at(h.p.at(counter).y).at(h.p.at(counter).x - 1) == HALL) {
+            l = true;
+        }
+        if (mapdata->at(h.p.at(counter).y).at(h.p.at(counter).x + 1) == HALL) {
+            r = true;
+        }
+        // y + 1 actually moves you down. Weird world we live in where the origin is in the top left and x and y are reversed.
+        if (mapdata->at(h.p.at(counter).y + 1).at(h.p.at(counter).x) == HALL) {
+            d = true;
+        }
+        if (mapdata->at(h.p.at(counter).y - 1).at(h.p.at(counter).x) == HALL) {
+            u = true;
+        }
+        
+        // This might be an optimization but it might be unnessisary because compilers are smart.
+        if (d || u || l || r) {
+            for (uint i = 0; i < h.p.size(); i++) {
+                point p = h.p.at(i);
+                
+                // shit code that probably works.
+                if (d && p.y == h.p.at(counter).y + 1 && p.x == h.p.at(counter).x ) d = false;
+                if (u && p.y == h.p.at(counter).y - 1 && p.x == h.p.at(counter).x ) u = false;
+                if (r && p.x == h.p.at(counter).x + 1 && p.y == h.p.at(counter).y ) r = false;
+                if (l && p.x == h.p.at(counter).x - 1 && p.y == h.p.at(counter).y ) l = false;
+            }
+        }
+        if (d) h.p.push_back({(h.p.at(counter).y + 1), h.p.at(counter).x});
+        if (u) h.p.push_back({(h.p.at(counter).y - 1), h.p.at(counter).x});
+        if (r) h.p.push_back({h.p.at(counter).y, (h.p.at(counter).x + 1)});
+        if (l) h.p.push_back({h.p.at(counter).y, (h.p.at(counter).x + 1)});
+        
+        counter++;
+    }
+    return h;
+}
+
+std::vector<hallway> stage2::findAllHallways()
+{
+    std::vector<hallway> h;
+    
+    // Insane 4 dimensional for loop to find all hallways in 2D. WTF
+    for (int i = 0; i < LEVEL_HEIGHT - 1; i++) {
+        for (int j = 0; j < LEVEL_WIDTH - 1; j++) {
+            if (mapdata->at(i).at(j) == HALL) {
+                bool addHall = true;
+                for (uint x = 0; x < h.size(); x++) {
+                    // Could these intersect? Possibly a huge optimization but I'm not quite sure yet
+                    if (i >= h.at(x).minY && i <= h.at(x).maxY && j >= h.at(x).minX && j <= h.at(x).maxX) {
+                        for (uint y = 0; y < h.at(x).p.size(); y++) {
+                            if (h.at(x).p.at(y).y == i && h.at(x).p.at(y).x == j) {
+                                addHall = false;
+                                break;
+                            }
+                        }
+                        
+                    }
+                    if (!addHall) break;
+                }
+                if (addHall) {
+                    h.push_back(findHallway(i, j));
+                }
+                
+            }
+        }
+    }
+    
+    
+    
+    return h;
 }

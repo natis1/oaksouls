@@ -29,6 +29,7 @@ binary_tree::binary_tree()
     }
     root = nullptr;
     // In theory this stops impossible to access rooms from generating. Hopefully.
+    // This is a really good idea to stop stage2 undefined behavior. Oh dear...
     root = add_node(1, LEVEL_HEIGHT - 1, 1, LEVEL_WIDTH - 1);
     node_build_loop(root);
     
@@ -64,13 +65,13 @@ void binary_tree::node_build_loop(node *leaf)
                 goodpt2 = -1;
                 point = conpts(rng);
                 for (int i = leaf->left->x1; i < leaf->left->x2; i++){
-                    if (mapdata.at(point).at(i) != 0) {
+                    if (mapdata.at(point).at(i) >= FLOOR) {
                         goodpt1 = i;
                         break;
                     }
                 }
                 for (int i = leaf->right->x1; i < leaf->right->x2; i++){
-                    if (mapdata.at(point).at(i) != 0) {
+                    if (mapdata.at(point).at(i) >= FLOOR) {
                         goodpt2 = i;
                         break;
                     }
@@ -80,7 +81,7 @@ void binary_tree::node_build_loop(node *leaf)
             
             if (tries > 0) {
                 for (int i = goodpt1; i < goodpt2 + 1; i++) {
-                    mapdata.at(point).at(i) = 2;
+                    mapdata.at(point).at(i) = POSSIBLE_HALL;
                 }
             } else {
                 //std::cerr << "Unable to build connection" << std::endl;
@@ -107,13 +108,13 @@ void binary_tree::node_build_loop(node *leaf)
                 goodpt1 = -1;
                 goodpt2 = -1;
                 for (int i = leaf->left->y1; i < leaf->left->y2; i++){
-                    if (mapdata.at(i).at(point) != 0) {
+                    if (mapdata.at(i).at(point) >= FLOOR) {
                         goodpt1 = i;
                         break;
                     }
                 }
                 for (int i = leaf->right->y1; i < leaf->right->y2; i++){
-                    if (mapdata.at(i).at(point) != 0) {
+                    if (mapdata.at(i).at(point) >= FLOOR) {
                         goodpt2 = i;
                         break;
                     }
@@ -123,7 +124,7 @@ void binary_tree::node_build_loop(node *leaf)
             
             if (tries > 0) {
                 for (int i = goodpt1; i < goodpt2 + 1; i++) {
-                    mapdata.at(i).at(point) = 2;
+                    mapdata.at(i).at(point) = POSSIBLE_HALL;
                 }
             } else {
                 //std::cerr << "Unable to build connection" << std::endl;
@@ -151,10 +152,10 @@ void binary_tree::node_build_loop(node *leaf)
         for (int i = leaf->x1;  i < leaf->x2; i++) {
             for (int j = leaf->y1; j < leaf->y2; j++) {
                 if (tunnel) {
-                    mapdata.at(j).at(i) = 3;
+                    mapdata.at(j).at(i) = POSSIBLE_HALL;
                 }
                 else if ((leaf->x1 + thickness <= i) && (leaf->x2 - thickness >= i) && (leaf->y1 + thickness <= j) && (leaf->y2 - thickness >= j)) {
-                    mapdata.at(j).at(i) = 1;
+                    mapdata.at(j).at(i) = FLOOR;
                 }
             }
         }
