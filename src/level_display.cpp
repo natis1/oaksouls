@@ -21,13 +21,28 @@
 void level_display::draw_level(std::vector<std::vector<int>> *tiles)
 {
     move(2,0);
+    
+    // TODO: add some goddamn color
     for (int i = 0; i < LEVEL_HEIGHT; i++) {
         char c [LEVEL_WIDTH + 1];
         for (int j = 0; j < LEVEL_WIDTH; j++) {
-            if (tiles->at(i).at(j) == 0) {
-                c [j] = 35;
-            } else {
-                c [j] = 45 + tiles->at(i).at(j);
+            switch (tiles->at(i).at(j)) {
+                case BREAKABLE_WALL:
+                case FLOOR:
+                    c [j] = 35 + tiles->at(i).at(j);
+                    break;
+                case UNBREAKABLE_WALL:
+                    // Should be black or something. and char 35
+                    c [j] = 34;
+                    break;
+                case HALL:
+                    c [j] = 95; // _
+                    break;
+                case DOOR:
+                    c [j] = 43; // +
+                    break;
+                c [j] = 63; // ?
+                
             }
         }
         c [LEVEL_WIDTH] = '\0';
