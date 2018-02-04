@@ -168,7 +168,7 @@ hallway stage2::findHallway(int y, int x)
         if (h.minY > h.p.at(i).y) h.minY = h.p.at(i).y;
         if (h.maxY < h.p.at(i).y) h.maxY = h.p.at(i).y;
         if (h.minX > h.p.at(i).x) h.minX = h.p.at(i).x;
-        if (h.maxX > h.p.at(i).x) h.maxX = h.p.at(i).x;
+        if (h.maxX < h.p.at(i).x) h.maxX = h.p.at(i).x;
     }
     
     return h;

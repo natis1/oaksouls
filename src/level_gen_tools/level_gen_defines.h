@@ -54,5 +54,5 @@
 #define BINARY_TREE_ROOM_CONNECT_TRIES 10
 
 // constants for stage2 generation
-#define STAGE2_DOOR_CHANCE 0.8
+#define STAGE2_DOOR_CHANCE 1
 #define STAGE2_SMART_DOORS true

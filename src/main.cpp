@@ -31,7 +31,6 @@ void signal_cleanup(int sig) {
     std::cerr << "Recieved signal: " << sig << std::endl;
     if (sig == SIGSEGV) {
         std::cerr << "Segmentation Fault!" << std::endl;
-        
     }
     
     if (sig == SIGABRT) {
