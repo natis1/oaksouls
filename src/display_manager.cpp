@@ -118,24 +118,16 @@ int display_manager::FBLogLoop(int startingValue)
 
 int display_manager::drawIntro()
 {
-    
-    
-    
     move(0,0);
-    init_pair(1, COLOR_BLACK, COLOR_BLUE);
-    init_pair(2, COLOR_BLACK, COLOR_GREEN);
-    init_pair(3, COLOR_WHITE, COLOR_BLACK);
-    
-    
-    
-    
     int xsize, ysize;
     getmaxyx(stdscr, ysize, xsize);
-    
     if (xsize != 80 || ysize < 24) {
         nodelay(stdscr, TRUE);
         int c = 0;
         move(0,0);
+        init_pair(1, COLOR_BLACK, COLOR_BLUE);
+        init_pair(2, COLOR_BLACK, COLOR_GREEN);
+        init_pair(3, COLOR_WHITE, COLOR_BLACK);
         do {
             usleep(SLOW_REDRAW_DELAY);
             if (c != -1) {
