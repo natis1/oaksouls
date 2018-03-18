@@ -38,5 +38,8 @@ public:
     void draw_items();
     void draw_stats();
     void draw_messages();
+    void set_default_colors();
+private:
+    void put_colored_ch(int color, char ch);
     
 };

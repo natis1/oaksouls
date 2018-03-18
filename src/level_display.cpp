@@ -17,36 +17,40 @@
  */
 
 #include "level_display.h"
+#include "color.h"
+
+#include <iostream>
 
 void level_display::draw_level(std::vector<std::vector<int>> *tiles)
 {
     move(2,0);
     
     // TODO: add some goddamn color
+    
+    
+    
     for (int i = 0; i < LEVEL_HEIGHT; i++) {
-        char c [LEVEL_WIDTH + 1];
         for (int j = 0; j < LEVEL_WIDTH; j++) {
             switch (tiles->at(i).at(j)) {
                 case BREAKABLE_WALL:
                 case FLOOR:
-                    c [j] = 35 + tiles->at(i).at(j);
+                    put_colored_ch(NORMAL_WHITE, 46);
                     break;
                 case UNBREAKABLE_WALL:
                     // Should be black or something. and char 35
-                    c [j] = 34;
+                    put_colored_ch(BRIGHT_BLACK, 35);
                     break;
                 case HALL:
-                    c [j] = 95; // _
+                    put_colored_ch(BRIGHT_WHITE, 46);
                     break;
                 case DOOR:
-                    c [j] = 43; // +
+                    put_colored_ch(NORMAL_GREEN, 43);
                     break;
-                c [j] = 63; // ?
+                
+                put_colored_ch(BRIGHT_RED, 63);
                 
             }
         }
-        c [LEVEL_WIDTH] = '\0';
-        printw(c);
         move(i+3,0);
     }
     
@@ -78,3 +82,24 @@ void level_display::draw_stats()
     
     
 }
+
+void level_display::set_default_colors()
+{
+    color c;
+    c.initColors();
+    
+}
+
+
+
+void level_display::put_colored_ch(int color, char ch)
+{
+    attron(COLOR_PAIR(color));
+    char c [2];
+    c[0] = ch;
+    c[1] = '\0';
+    if ( printw(c) != 0 ) {
+        printw("e");
+    };
+}
+

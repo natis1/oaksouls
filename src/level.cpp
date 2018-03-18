@@ -33,6 +33,7 @@ void level::generateFloor()
     gen.binarySpace();
     level_display d = level_display();
     tiles = &gen.mapdata;
+    d.set_default_colors();
     d.draw_level(tiles);
     move(0,0);
     getch();

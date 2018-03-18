@@ -23,6 +23,10 @@
 #include "file_manager.h"
 #include <string.h>
 
+#include "color.h"
+#include <stdlib.h>
+
+
 //debug only
 #include <iostream>
 
@@ -114,12 +118,9 @@ int display_manager::FBLogLoop(int startingValue)
 
 int display_manager::drawIntro()
 {
-    move(1,0);
-    printw("In a field of grass lies a single oak tree.\n");
-    printw("It sits protected in its little world from the monsters around it.\n");
-    printw("Until one day, when it finally grows big enough to take on the world.\n\n");
-    printw("You control this oak...");
-    getch();
+    
+    
+    
     move(0,0);
     init_pair(1, COLOR_BLACK, COLOR_BLUE);
     init_pair(2, COLOR_BLACK, COLOR_GREEN);
@@ -127,45 +128,51 @@ int display_manager::drawIntro()
     
     
     
-    nodelay(stdscr, TRUE);
-    int c = 0;
-    move(0,0);
-    do {
-        usleep(SLOW_REDRAW_DELAY);
-        if (c != -1) {
-            clear();
-            printw("Please adjust the terminal until the picture perfectly fits and press space.....");
-            attron(COLOR_PAIR(1));
-            printw("................................................................................");
-            printw("................................................................................");
-            printw("................................................................................");
-            printw("................................................................................");
-            printw("...................................");attron(COLOR_PAIR(3)); printw("Oak Souls"); attron(COLOR_PAIR(1)); printw("....................................");
-            printw("................................................................................");
-            printw("................................................................................");
-            printw("................................................................................");
-            printw("............"); attron(COLOR_PAIR(2)); printw("/LLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("....................................................");
-            printw("......."); attron(COLOR_PAIR(2)); printw("////LLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("..................................................");
-            printw("......"); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("...............................................");
-            printw("....."); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("............................................");
-            printw("...."); attron(COLOR_PAIR(2)); printw("///LLLLLLLLLLLLLLLLLLLLLLLLLLLLL/"); attron(COLOR_PAIR(1)); printw("...........................................");
-            printw("....."); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLLLLLLLLLLLLLLLL//"); attron(COLOR_PAIR(1)); printw("...........................................");
-            printw("....."); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLTTLLLLLLLLLLL/"); attron(COLOR_PAIR(1)); printw("..............................................");
-            printw("......"); attron(COLOR_PAIR(2)); printw("/LLLLLLLLLLLLTTTTLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("...............................................");
-            printw("......"); attron(COLOR_PAIR(2)); printw("/LLLLLLLLLLLLTTTTLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("................................................");
-            printw(".................."); attron(COLOR_PAIR(2)); printw("/TTTT"); attron(COLOR_PAIR(1)); printw(".........................................................");
-            printw("......"); attron(COLOR_PAIR(2)); printw("::::::::::::/TTTT::::::::::"); attron(COLOR_PAIR(1)); printw("..............................."); attron(COLOR_PAIR(2)); printw("@"); attron(COLOR_PAIR(1)); printw("...............");
-            attron(COLOR_PAIR(2)); printw("###################TTTT#########################################################");
-            printw("##########RRRRRRR#RRRRRR#RRRRRRR################################################");
-            printw("#################R##RR##R#######################################################");
-            printw("#############RRRR###RR###RRRRRR################################################\n");
-            attron(COLOR_PAIR(3));
-            printw("#The terminal is too large if you are seeing this line.");
-            move(0,0);
+    
+    int xsize, ysize;
+    getmaxyx(stdscr, ysize, xsize);
+    
+    if (xsize != 80 || ysize < 24) {
+        nodelay(stdscr, TRUE);
+        int c = 0;
+        move(0,0);
+        do {
+            usleep(SLOW_REDRAW_DELAY);
+            if (c != -1) {
+                clear();
+                printw("Please adjust the terminal until the picture perfectly fits and press space.....");
+                attron(COLOR_PAIR(1));
+                printw("................................................................................");
+                printw("................................................................................");
+                printw("................................................................................");
+                printw("................................................................................");
+                printw("...................................");attron(COLOR_PAIR(3)); printw("Oak Souls"); attron(COLOR_PAIR(1)); printw("....................................");
+                printw("................................................................................");
+                printw("................................................................................");
+                printw("................................................................................");
+                printw("............"); attron(COLOR_PAIR(2)); printw("/LLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("....................................................");
+                printw("......."); attron(COLOR_PAIR(2)); printw("////LLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("..................................................");
+                printw("......"); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("...............................................");
+                printw("....."); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("............................................");
+                printw("...."); attron(COLOR_PAIR(2)); printw("///LLLLLLLLLLLLLLLLLLLLLLLLLLLLL/"); attron(COLOR_PAIR(1)); printw("...........................................");
+                printw("....."); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLLLLLLLLLLLLLLLL//"); attron(COLOR_PAIR(1)); printw("...........................................");
+                printw("....."); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLTTLLLLLLLLLLL/"); attron(COLOR_PAIR(1)); printw("..............................................");
+                printw("......"); attron(COLOR_PAIR(2)); printw("/LLLLLLLLLLLLTTTTLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("...............................................");
+                printw("......"); attron(COLOR_PAIR(2)); printw("/LLLLLLLLLLLLTTTTLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("................................................");
+                printw(".................."); attron(COLOR_PAIR(2)); printw("/TTTT"); attron(COLOR_PAIR(1)); printw(".........................................................");
+                printw("......"); attron(COLOR_PAIR(2)); printw("::::::::::::/TTTT::::::::::"); attron(COLOR_PAIR(1)); printw("..............................."); attron(COLOR_PAIR(2)); printw("@"); attron(COLOR_PAIR(1)); printw("...............");
+                attron(COLOR_PAIR(2)); printw("###################TTTT#########################################################");
+                printw("##########RRRRRRR#RRRRRR#RRRRRRR################################################");
+                printw("#################R##RR##R#######################################################");
+                printw("#############RRRR###RR###RRRRRR################################################\n");
+                attron(COLOR_PAIR(3));
+                printw("#The terminal is too large if you are seeing this line.");
+                move(0,0);
+            }
+            c = getch();
         }
-        c = getch();
+        while ( c != ' ' );
     }
-    while ( c != ' ' );
     nodelay(stdscr, FALSE);
     drawMainMenu();
     return mainMenuLoop();

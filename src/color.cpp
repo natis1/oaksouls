@@ -19,6 +19,21 @@
 #include "color.h"
 #include <math.h>
 
+#include <iostream>
+
+void color::initColors()
+{
+    setBrightness(1.0);
+    setTint(1.0, 1.0, 1.0);
+    start_color();
+    
+    if (USE_FULL_COLOR) {
+        reloadColors();
+        setPairs();
+    }
+    
+}
+
 
 void color::setBrightness(double bright)
 {
@@ -43,17 +58,20 @@ void color::reloadColors()
 {
     setColor(BRIGHT_BG, pow(brightness / 2.0, ( 1.0 / GAMMA)), 1., 1., 1.);
     setColor(NORMAL_BG, 0, 1., 1., 1.);
+    setColor(NORMAL_BG + 1, 0, 1., 1., 1.);
+    setColor(NORMAL_BG + 2, 0, 1., 1., 1.);
+    
     setColor(BBLACK_FG, 0, 1., 1., 1.);
     
     for (int i = 0; i < 3; i++) {
         double brightActual = brightness / (pow(2, i) );
-        setColor(BWHITE_FG + (7 * i), brightActual, 1., 1., 1. );
-        setColor(BWHITE_FG + (7 * i) + 1, brightActual, 1., 0, 0 );
-        setColor(BWHITE_FG + (7 * i) + 2, brightActual, 1., 1., 0);
-        setColor(BWHITE_FG + (7 * i) + 3, brightActual, 0, 1., 0);
-        setColor(BWHITE_FG + (7 * i) + 4, brightActual, 0, 1., 1. );
-        setColor(BWHITE_FG + (7 * i) + 5, brightActual, 0, 0, 1. );
-        setColor(BWHITE_FG + (7 * i) + 6, brightActual, 1., 0, 1. );
+        setColor(BBLACK_FG + (7 * i), brightActual, 1., 1., 1. );
+        setColor(BBLACK_FG + (7 * i) + 1, brightActual, 1., 0, 0 );
+        setColor(BBLACK_FG + (7 * i) + 2, brightActual, 1., 1., 0);
+        setColor(BBLACK_FG + (7 * i) + 3, brightActual, 0, 1., 0);
+        setColor(BBLACK_FG + (7 * i) + 4, brightActual, 0, 1., 1. );
+        setColor(BBLACK_FG + (7 * i) + 5, brightActual, 0, 0, 1. );
+        setColor(BBLACK_FG + (7 * i) + 6, brightActual, 1., 0, 1. );
     }
     
     
@@ -89,6 +107,8 @@ void color::setColor(short index, double bright, double redMod, double greenMod,
     
     // Clip colors to stop overflow
     
+    //TODO: clip all colors by the same percentageif any one clips.
+    
     if (r > 1000) {
         r = 1000;
     } else if (r < 0) {
@@ -107,6 +127,49 @@ void color::setColor(short index, double bright, double redMod, double greenMod,
         b = 0;
     }
     
-    init_color(index, r, g, b);
+    if (init_color(index, r, g, b) != 0) {
+        
+        curs_set(1);
+        clear();
+        endwin();
+        std::cerr << "Unable to init color of index " << index << std::endl;
+        std::cerr << "Number of valid colors/ color pairs: " << COLORS << "/" << COLOR_PAIRS << std::endl;
+        exit(11);
+    }
+    
 }
+
+
+void color::setPairs()
+{
+    // This is awful
+    // Take a look at this hacky shit. Hope it works right because this will suck to debug
+    for (int i = 0; i < 3; i++) {
+        init_pair(BRIGHT_WHITE + (8 * i)    , BBLACK_FG + (7 * i)    , BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 1, BBLACK_FG + (7 * i)    , BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 2, BBLACK_FG + (7 * i) + 1, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 3, BBLACK_FG + (7 * i) + 2, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 4, BBLACK_FG + (7 * i) + 3, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 5, BBLACK_FG + (7 * i) + 4, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 6, BBLACK_FG + (7 * i) + 5, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 7, BBLACK_FG + (7 * i) + 6, BRIGHT_BG + i);
+        
+    }
+    
+}
+
+
+void color::setBlandColorArray()
+{
+    // Enjoy your EGA for using a bad terminal emulator
+    init_pair(BRIGHT_WHITE, COLOR_WHITE, COLOR_BLACK);
+    init_pair(BRIGHT_BLACK, COLOR_BLACK, COLOR_WHITE);
+    init_pair(BRIGHT_RED, COLOR_RED, COLOR_BLACK);
+    init_pair(BRIGHT_YELLOW, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(BRIGHT_GREEN, COLOR_GREEN, COLOR_BLACK);
+    init_pair(BRIGHT_CYAN, COLOR_CYAN, COLOR_BLACK);
+    init_pair(BRIGHT_BLUE, COLOR_BLUE, COLOR_BLACK);
+    init_pair(BRIGHT_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
+}
+
 

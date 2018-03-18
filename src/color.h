@@ -19,6 +19,8 @@
 #pragma once
 #include <curses.h>
 
+extern bool USE_FULL_COLOR;
+
 #define BRIGHT_ALGO linearBrightness
 
 // Backgrounds must be neutral (grey before tint)
@@ -52,72 +54,48 @@
  * 
  * 
  */
-#define BRIGHT_WHITE 65
-#define BRIGHT_BLACK 66
-#define BRIGHT_RED 67
-#define BRIGHT_YELLOW 68
-#define BRIGHT_GREEN 69
-#define BRIGHT_CYAN 70
-#define BRIGHT_BLUE 71
-#define BRIGHT_MAGENTA 72
 
-#define VIVID_WHITE 73
-#define VIVID_BLACK 74
-#define VIVID_RED 75
-#define VIVID_YELLOW 76
-#define VIVID_GREEN 77
-#define VIVID_CYAN 78
-#define VIVID_BLUE 79
-#define VIVID_MAGENTA 80
+#define BRIGHT_BG 62
+#define NORMAL_BG 63
+#define BWHITE_FG 66
+#define BBLACK_FG 67
+// etc for other colors
 
-#define NORMAL_WHITE 81
-#define NORMAL_BLACK 74
-#define NORMAL_RED 82
-#define NORMAL_YELLOW 83
-#define NORMAL_GREEN 84
-#define NORMAL_CYAN 85
-#define NORMAL_BLUE 86
-#define NORMAL_MAGENTA 87
+extern short BRIGHT_WHITE;
+extern short BRIGHT_BLACK;
+extern short BRIGHT_RED;
+extern short BRIGHT_YELLOW;
+extern short BRIGHT_GREEN;
+extern short BRIGHT_CYAN;
+extern short BRIGHT_BLUE;
+extern short BRIGHT_MAGENTA;
 
-#define DARK_WHITE 88
-#define DARK_BLACK 74
-#define DARK_RED 89
-#define DARK_YELLOW 90
-#define DARK_GREEN 91
-#define DARK_CYAN 92
-#define DARK_BLUE 93
-#define DARK_MAGENTA 94
+extern short VIVID_WHITE;
+extern short VIVID_BLACK;
+extern short VIVID_RED;
+extern short VIVID_YELLOW;
+extern short VIVID_GREEN;
+extern short VIVID_CYAN;
+extern short VIVID_BLUE;
+extern short VIVID_MAGENTA;
 
+extern short NORMAL_WHITE;
+extern short NORMAL_BLACK;
+extern short NORMAL_RED;
+extern short NORMAL_YELLOW;
+extern short NORMAL_GREEN;
+extern short NORMAL_CYAN;
+extern short NORMAL_BLUE;
+extern short NORMAL_MAGENTA;
 
-
-#define BRIGHT_BG 64
-#define NORMAL_BG 65
-
-// Color definitions
-#define BWHITE_FG 67
-#define BRED_FG 68
-#define BYELLOW_FG 69
-#define BGREEN_FG 70
-#define BCYAN_FG 71
-#define BBLUE_FG 72
-#define BMAGENTA_FG 73
-#define NWHITE_FG 74
-#define NRED_FG 75
-#define NYELLOW_FG 76
-#define NGREEN_FG 77
-#define NCYAN_FG 78
-#define NBLUE_FG 79
-#define NMAGENTA_FG 80
-#define DWHITE_FG 81
-#define DRED_FG 82
-#define DYELLOW_FG 83
-#define DGREEN_FG 84
-#define DCYAN_FG 85
-#define DBLUE_FG 86
-#define DMAGENTA_FG 87
-
-
-#define BBLACK_FG 66
+extern short DARK_WHITE;
+extern short DARK_BLACK;
+extern short DARK_RED;
+extern short DARK_YELLOW;
+extern short DARK_GREEN;
+extern short DARK_CYAN;
+extern short DARK_BLUE;
+extern short DARK_MAGENTA;
 
 /**
  * @todo write docs
@@ -142,10 +120,15 @@ protected:
     double redTint = 1;
     double greenTint = 1;
     double blueTint = 1;
+    
+    
+    
 private:
 
+    void setBlandColorArray();
     
     void setColor(short index, double bright, double redMod, double greenMod, double blueMod);
+    void setPairs();
     void clipColors();
     
     
