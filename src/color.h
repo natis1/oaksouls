@@ -19,7 +19,6 @@
 #pragma once
 #include <curses.h>
 
-extern bool USE_FULL_COLOR;
 
 #define BRIGHT_ALGO linearBrightness
 
@@ -55,12 +54,11 @@ extern bool USE_FULL_COLOR;
  * 
  */
 
-#define BRIGHT_BG 62
-#define NORMAL_BG 63
-#define BWHITE_FG 66
-#define BBLACK_FG 67
+#define BRIGHT_BG 60
+#define NORMAL_BG 61
 // etc for other colors
 
+extern bool USE_FULL_COLOR;
 extern short BRIGHT_WHITE;
 extern short BRIGHT_BLACK;
 extern short BRIGHT_RED;
@@ -117,9 +115,9 @@ protected:
     double brightness = 1;
     
     // Filters to apply
-    double redTint = 1;
-    double greenTint = 1;
-    double blueTint = 1;
+    double redTint = 2;
+    double greenTint = 2;
+    double blueTint = 2;
     
     
     

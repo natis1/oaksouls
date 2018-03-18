@@ -33,15 +33,15 @@ void level_display::draw_level(std::vector<std::vector<int>> *tiles)
         for (int j = 0; j < LEVEL_WIDTH; j++) {
             switch (tiles->at(i).at(j)) {
                 case BREAKABLE_WALL:
-                case FLOOR:
-                    put_colored_ch(NORMAL_WHITE, 46);
-                    break;
                 case UNBREAKABLE_WALL:
                     // Should be black or something. and char 35
                     put_colored_ch(BRIGHT_BLACK, 35);
                     break;
+                case FLOOR:
+                    put_colored_ch(VIVID_WHITE, 46);
+                    break;
                 case HALL:
-                    put_colored_ch(BRIGHT_WHITE, 46);
+                    put_colored_ch(NORMAL_WHITE, 46);
                     break;
                 case DOOR:
                     put_colored_ch(NORMAL_GREEN, 43);
@@ -53,6 +53,10 @@ void level_display::draw_level(std::vector<std::vector<int>> *tiles)
         }
         move(i+3,0);
     }
+    for (int i = 65; i < 96; i++) {
+        put_colored_ch(i, 63);
+    }
+    
     
     
     

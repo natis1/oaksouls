@@ -99,7 +99,7 @@ void init_globals() {
         }
         move(0,0);
     }
-    bool USE_FULL_COLOR = fullc;
+    USE_FULL_COLOR = fullc;
     
     if (USE_FULL_COLOR) {
         BRIGHT_WHITE = 65;
