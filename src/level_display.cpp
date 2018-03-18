@@ -46,8 +46,8 @@ void level_display::draw_level(std::vector<std::vector<int>> *tiles)
                 case DOOR:
                     put_colored_ch(NORMAL_GREEN, 43);
                     break;
-                
-                put_colored_ch(BRIGHT_RED, 63);
+                default:
+                    put_colored_ch(BRIGHT_RED, 63);
                 
             }
         }
