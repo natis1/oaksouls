@@ -19,6 +19,7 @@
 #include <iostream>
 #include <curses.h>
 
+
 #define RETURNVALUE 0
 #ifndef CURSES
 #undef RETURNVALUE
@@ -62,12 +63,16 @@ int main() {
         init_color(130, 0, 0, 500);
         init_pair(19, 120, 130);
         attron(COLOR_PAIR(19));
-        printw("Test 1 passed, terminal has color changing");
+        printw("Test 2 passed, terminal has color changing\n");
+        
+        
         getch();
     }
     
     curs_set(1);
     clear();
     endwin();
+    short colnum = tigetnum("colors");
+    std::cout << "Number of colors supported by terminal: " << colnum << std::endl;
     return i;
 }

@@ -19,5 +19,5 @@ install(TARGETS oaksouls RUNTIME DESTINATION bin)
 
 
 
-#add_executable(cursestest "${CMAKE_SOURCE_DIR}/tests/cursestest.cpp")
-#target_link_libraries(cursestest "${CURSES_LIBRARIES}")
+add_executable(cursestest "${CMAKE_SOURCE_DIR}/tests/cursestest.cpp")
+target_link_libraries(cursestest "${CURSES_LIBRARIES}")
