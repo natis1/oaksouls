@@ -144,9 +144,9 @@ int display_manager::drawIntro()
                 printw("................................................................................");
                 printw("............"); attron(COLOR_PAIR(2)); printw("/LLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("....................................................");
                 printw("......."); attron(COLOR_PAIR(2)); printw("////LLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("..................................................");
-                printw("......"); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("...............................................");
-                printw("....."); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("............................................");
-                printw("...."); attron(COLOR_PAIR(2)); printw("///LLLLLLLLLLLLLLLLLLLLLLLLLLLLL/"); attron(COLOR_PAIR(1)); printw("...........................................");
+                printw("......"); attron(COLOR_PAIR(2)); printw("/////LLLLLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("...............................................");
+                printw("....."); attron(COLOR_PAIR(2)); printw("///////LLLLLLLLLLLLLLLLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("............................................");
+                printw("...."); attron(COLOR_PAIR(2)); printw("////LLLLLLLLLLLLLLLLLLLLLLLLLLLL/"); attron(COLOR_PAIR(1)); printw("...........................................");
                 printw("....."); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLLLLLLLLLLLLLLLL//"); attron(COLOR_PAIR(1)); printw("...........................................");
                 printw("....."); attron(COLOR_PAIR(2)); printw("//LLLLLLLLLLLLLTTLLLLLLLLLLL/"); attron(COLOR_PAIR(1)); printw("..............................................");
                 printw("......"); attron(COLOR_PAIR(2)); printw("/LLLLLLLLLLLLTTTTLLLLLLLLLL"); attron(COLOR_PAIR(1)); printw("...............................................");
@@ -156,14 +156,22 @@ int display_manager::drawIntro()
                 attron(COLOR_PAIR(2)); printw("###################TTTT#########################################################");
                 printw("##########RRRRRRR#RRRRRR#RRRRRRR################################################");
                 printw("#################R##RR##R#######################################################");
-                printw("#############RRRR###RR###RRRRRR################################################\n");
-                attron(COLOR_PAIR(3));
-                printw("#The terminal is too large if you are seeing this line.");
+                printw("#############RRRR###RR###RRRRRR#################################################");
+                for (int i = 24; i < getmaxy(stdscr); i++) {
+                    printw("################################################################################");
+                }
+                if (getmaxy(stdscr) < 24 && getmaxx(stdscr) == 80) {
+                    attron(COLOR_PAIR(3));
+                    move(getmaxy(stdscr) - 1, 0);
+                    printw("The terminal is too short!");
+                }
                 move(0,0);
             }
+            attron(COLOR_PAIR(3));
             c = getch();
         }
         while ( c != ' ' );
+        
     }
     nodelay(stdscr, FALSE);
     drawMainMenu();
