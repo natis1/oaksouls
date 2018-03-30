@@ -34,26 +34,39 @@ void level_display::draw_level(std::vector<std::vector<int>> *tiles)
             switch (tiles->at(i).at(j)) {
                 case BREAKABLE_WALL:
                 case UNBREAKABLE_WALL:
+                case MAP_EDGE:
                     // Should be black or something. and char 35
-                    put_colored_ch(BRIGHT_BLACK, 35);
+                    put_colored_ch(NORMAL_WHITE, '#');
                     break;
                 case FLOOR:
-                    put_colored_ch(VIVID_WHITE, 46);
+                    put_colored_ch(NORMAL_WHITE, '.');
                     break;
                 case HALL:
-                    put_colored_ch(NORMAL_WHITE, 46);
+                    put_colored_ch(NORMAL_WHITE, '.');
                     break;
                 case DOOR:
-                    put_colored_ch(NORMAL_GREEN, 43);
+                    put_colored_ch(NORMAL_GREEN, '/');
+                    break;
+                case OAKALTER:
+                    put_colored_ch(NORMAL_GREEN, '_');
+                    break;
+                case ENEMYALTER:
+                    put_colored_ch(NORMAL_RED, '_');
+                    break;
+                case DOWNSTAIR:
+                    put_colored_ch(NORMAL_WHITE, '<');
+                    break;
+                case UPSTAIR:
+                    put_colored_ch(NORMAL_WHITE, '>');
                     break;
                 default:
-                    put_colored_ch(BRIGHT_RED, 63);
+                    put_colored_ch(NORMAL_RED, '?');
                 
             }
         }
         move(i+3,0);
     }
-    for (int i = 65; i < 96; i++) {
+    for (int i = 65; i < 97; i++) {
         put_colored_ch(i, 63);
     }
     
@@ -98,11 +111,11 @@ void level_display::set_default_colors()
 
 void level_display::put_colored_ch(int color, char ch)
 {
-    attron(COLOR_PAIR(color));
+    int errcheck = attron(COLOR_PAIR(color));
     char c [2];
     c[0] = ch;
     c[1] = '\0';
-    if ( printw(c) != 0 ) {
+    if ( printw(c) != 0  || errcheck != 0) {
         printw("e");
     };
 }

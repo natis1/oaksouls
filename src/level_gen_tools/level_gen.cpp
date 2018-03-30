@@ -22,12 +22,18 @@
 
 void level_gen::binarySpace() {
     binary_tree tr = binary_tree();
-    mapdata = tr.mapdata;
+    level.mapdata = tr.mapdata;
     cleanup();
-    stage2 s2 (&mapdata);
-    stage3 s3 (&mapdata);
-    
-    
+    stage2 s2 (&level.mapdata);
+    stage3 s3 (&level);
+    s3.placeObjectExternal(DOWNSTAIR, FLOOR);
+    s3.placeObjectExternal(UPSTAIR, FLOOR);
+    s3.placeObjectExternal(OAKALTER, FLOOR);
+    s3.placeObjectExternal(OAKALTER, FLOOR);
+    s3.placeObjectExternal(OAKALTER, FLOOR);
+    s3.placeObjectExternal(ENEMYALTER, FLOOR);
+    s3.placeObjectExternal(ENEMYALTER, FLOOR);
+    s3.placeObjectExternal(ENEMYALTER, FLOOR);
     
 }
 
@@ -36,12 +42,12 @@ void level_gen::cleanup()
     
     // make edges walls
     for (int i = 0; i < LEVEL_HEIGHT; i++) {
-        mapdata.at(i).at(0) = MAP_EDGE;
-        mapdata.at(i).at(LEVEL_WIDTH - 1) = MAP_EDGE;
+        level.mapdata.at(i).at(0) = MAP_EDGE;
+        level.mapdata.at(i).at(LEVEL_WIDTH - 1) = MAP_EDGE;
     }
     for (int j = 0; j < LEVEL_WIDTH; j++) {
-        mapdata.at(0).at(j) = MAP_EDGE;
-        mapdata.at(LEVEL_HEIGHT - 1).at(j) = MAP_EDGE;
+        level.mapdata.at(0).at(j) = MAP_EDGE;
+        level.mapdata.at(LEVEL_HEIGHT - 1).at(j) = MAP_EDGE;
     }
     
 }

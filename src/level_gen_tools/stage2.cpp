@@ -107,9 +107,9 @@ void stage2::smartDoorGen()
     
 }
 
-hallway stage2::findHallway(int y, int x)
+stage2::hallway stage2::findHallway(int y, int x)
 {
-    hallway h;
+    stage2::hallway h;
     h.minY = INT32_MAX;
     h.maxY = 0;
     h.minX = INT32_MAX;
@@ -174,9 +174,9 @@ hallway stage2::findHallway(int y, int x)
     return h;
 }
 
-std::vector<hallway> stage2::findAllHallways()
+std::vector<stage2::hallway> stage2::findAllHallways()
 {
-    std::vector<hallway> h;
+    std::vector<stage2::hallway> h;
     
     // Insane 4 dimensional for loop to find all hallways in 2D. WTF
     for (int i = 0; i < LEVEL_HEIGHT - 1; i++) {

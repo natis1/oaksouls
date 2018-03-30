@@ -24,8 +24,13 @@
 class level_gen
 {
 public:
+    
+    
+    
+    map level;
+    
     void binarySpace();
-    std::vector<std::vector<int>> mapdata;
+    
     
     
 private:

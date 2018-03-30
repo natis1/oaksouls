@@ -51,7 +51,7 @@ private:
     };
     void hallwayScan();
     hallway findHallway(int y, int x);
-    std::vector<hallway> findAllHallways();
+    std::vector<stage2::hallway> findAllHallways();
     bool isHallway(int y, int x);
     void smartDoorGen();
     void doorGen();

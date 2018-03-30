@@ -22,9 +22,9 @@
 
 
 
-stage3::stage3(std::vector<std::vector<int> >* mapdata)
+stage3::stage3(map *level)
 {
-    this->mapdata = mapdata;
+    this->level = level;
     
     concatPoints();
     
@@ -38,10 +38,10 @@ void stage3::concatPoints()
     
     for (int i = 0; i < LEVEL_HEIGHT; i++) {
         for (int j = 0; j < LEVEL_WIDTH; j++) {
-            if (mapdata->at(i).at(j) == FLOOR) {
+            if (level->mapdata.at(i).at(j) == FLOOR) {
                 floors.push_back( {i, j} );
                 
-            } else if (mapdata->at(i).at(j) == BREAKABLE_WALL || mapdata->at(i).at(j) == UNBREAKABLE_WALL) {
+            } else if (level->mapdata.at(i).at(j) == BREAKABLE_WALL || level->mapdata.at(i).at(j) == UNBREAKABLE_WALL) {
                 walls.push_back( {i, j} );
             }
         }
@@ -49,7 +49,26 @@ void stage3::concatPoints()
     
 }
 
-void stage3::placeObject(int objID)
+void stage3::addAlter(int piety)
+{
+    
+    
+    
+    
+}
+
+void stage3::addExit(int level)
+{
+    
+    
+    
+    
+    
+}
+
+
+
+stage3::point stage3::placeObject(int objID)
 {
     std::random_device rd;
     std::mt19937 rng(rd());
@@ -61,59 +80,77 @@ void stage3::placeObject(int objID)
         y = heightDist(rng);
         x = widthDist(rng);
     }
-    while (mapdata->at(y).at(x) != FLOOR || mapdata->at(y).at(x) != HALL || mapdata->at(y).at(x) != BREAKABLE_WALL || mapdata->at(y).at(x) != UNBREAKABLE_WALL);
+    while (level->mapdata.at(y).at(x) != FLOOR || level->mapdata.at(y).at(x) != HALL || level->mapdata.at(y).at(x) != BREAKABLE_WALL || level->mapdata.at(y).at(x) != UNBREAKABLE_WALL);
     
-    placeObject(objID, y, x);
-    
+    return placeObject(objID, y, x);
 }
 
 
-void stage3::placeObject(int objID, int featureType)
+stage3::point stage3::placeObject(int objID, int featureType)
 {
     if (featureType == FLOOR) {
         std::random_device rd;
         std::mt19937 rng(rd());
         std::uniform_int_distribution<int> dist(0, floors.size() - 1);
         int i = dist(rng);
-        placeObject(objID, floors.at(i).y, floors.at(i).x);
+        return placeObject(objID, floors.at(i).y, floors.at(i).x);
     } else if (featureType == BREAKABLE_WALL) {
         std::random_device rd;
         std::mt19937 rng(rd());
         std::uniform_int_distribution<int> dist(0, walls.size() - 1);
         int i = dist(rng);
-        placeObject(objID, walls.at(i).y, walls.at(i).x);
+        return placeObject(objID, walls.at(i).y, walls.at(i).x);
     }
-    
+    return {-1, -1};
 }
 
-void stage3::placeObject(int objID, int y, int x)
+stage3::point stage3::placeObject(int objID, int y, int x)
 {
-    int locID = mapdata->at(y).at(x);
-    mapdata->at(y).at(x) = objID;
+    int locID = level->mapdata.at(y).at(x);
+    level->mapdata.at(y).at(x) = objID;
     if (removePoint(locID, y, x) != 0) {
         //log error
         
     }
+    
+    return {y, x};
 }
 
 int stage3::removePoint(int pointID, int y, int x)
 {
     if (pointID == FLOOR) {
-        for (int i = 0; i < floors.size(); i++) {
+        for (uint i = 0; i < floors.size(); i++) {
             if ( floors.at(i).y == y && floors.at(i).x == x) {
-                //floors.erase( {&floors.at.(i), floors} );
-                
+                floors.erase( floors.begin() + i );
+                return 0;
             }
         }
         
     } else if (pointID == BREAKABLE_WALL || pointID == UNBREAKABLE_WALL) {
-        for (int i = 0; i < floors.size(); i++) {
-            if ( floors.at(i).y == y && floors.at(i).x == x) {
-                //floors.erase( {&floors.at.(i), floors} );
-                
+        for (uint i = 0; i < walls.size(); i++) {
+            if ( walls.at(i).y == y && walls.at(i).x == x) {
+                walls.erase( walls.begin() + i );
+                return 0;
             }
         }
+    } else {
+        return 0;
     }
     
-    
+    return 1;
+}
+
+void stage3::placeObjectExternal(int objID)
+{
+    placeObject(objID);
+}
+
+void stage3::placeObjectExternal(int objID, int featureType)
+{
+    placeObject(objID, featureType);
+}
+
+void stage3::placeObjectExternal(int objID, int y, int x)
+{
+    placeObject(objID, y, x);
 }

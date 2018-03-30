@@ -35,7 +35,7 @@
 
 
 #define UNBREAKABLE_WALL -1
-#define MAP_EDGE -1
+#define MAP_EDGE -2
 
 
 // Breakable wall and wall-like objects are between 0 and 10
@@ -66,3 +66,30 @@
 // constants for stage2 generation
 #define STAGE2_DOOR_CHANCE 1
 #define STAGE2_SMART_DOORS true
+
+struct alter {
+    int y;
+    int x;
+    
+    int piety;
+    int strength;
+};
+
+struct levelExits {
+    int y;
+    int x;
+    // which level will this exit load?
+    int level;
+    
+};
+
+struct map {
+    //the current map level
+    int level;
+    
+        
+    std::vector<std::vector<int>> mapdata;
+    std::vector<alter> alters;
+    std::vector<levelExits> exits;
+};
+
