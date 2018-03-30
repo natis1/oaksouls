@@ -78,7 +78,7 @@ void init_globals() {
         init_pair(1, COLOR_WHITE, COLOR_BLACK);
         move(11,0);
         attron(COLOR_PAIR(65));
-        printw("If you can see this text, your terminal is lying to you!\nIt can draw more colors than it claims\npress c to enable full color mode\nand add export TERM=xterm-256color to ~/.bashrc to make it permanent\n Terminal: ");
+        printw("If you can see this text, your terminal (might be) lying to you!\nIt might draw more colors than it claims\npress c to enable full color mode\nif it works add export TERM=xterm-256color to ~/.bashrc to keep it\n Terminal is emulating: ");
         printw(terminalUsed);
         attron(COLOR_PAIR(1));
     }
