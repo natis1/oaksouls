@@ -59,20 +59,22 @@ void color::setTint(double r, double g, double b)
 void color::reloadColors()
 {
     setColor(BRIGHT_BG, pow(brightness / 2.0, ( 1.0 / GAMMA)), 1., 1., 1.);
-    setColor(NORMAL_BG, 0, 1., 1., 1.);
-    setColor(NORMAL_BG + 1, 0, 1., 1., 1.);
-    setColor(NORMAL_BG + 2, 0, 1., 1., 1.);    
+    setColor(VIVID_BG, pow(brightness / 3.0, ( 1.0 / GAMMA)), 1., 1., 1.);
+    setColor(NORMAL_BG, pow(brightness / 4.0, ( 1.0 / GAMMA)), 1., 1., 1.);
+    setColor(DARK_BG, 0, 1., 1., 1.);
+    
     //setColor(BBLACK_FG, 0, 1., 1., 1.);
     
-    for (int i = 0; i < 3; i++) {
-        double brightActual = brightness / (pow(1.5, (i - 1) ) );
-        setColor(BRIGHT_WHITE + (7 * i), brightActual, 1., 1., 1. );
-        setColor(BRIGHT_WHITE + (7 * i) + 1, brightActual, 1., 0, 0 );
-        setColor(BRIGHT_WHITE + (7 * i) + 2, brightActual, 1., 1., 0);
-        setColor(BRIGHT_WHITE + (7 * i) + 3, brightActual, 0, 1., 0);
-        setColor(BRIGHT_WHITE + (7 * i) + 4, brightActual, 0, 1., 1. );
-        setColor(BRIGHT_WHITE + (7 * i) + 5, brightActual, 0, 0, 1. );
-        setColor(BRIGHT_WHITE + (7 * i) + 6, brightActual, 1., 0, 1. );
+    for (int i = 0; i < 4; i++) {
+        double brightActual = (brightness / (pow(1.5, (i - 1) ) )) + 0.1;
+        setColor(BRIGHT_WHITE + (8 * i), brightActual, 1., 1., 1. );
+        setColor(BRIGHT_WHITE + (8 * i) + 1, brightActual, 0., 0, 0 );
+        setColor(BRIGHT_WHITE + (8 * i) + 2, brightActual, 1., 0, 0 );
+        setColor(BRIGHT_WHITE + (8 * i) + 3, brightActual, 1., 1., 0);
+        setColor(BRIGHT_WHITE + (8 * i) + 4, brightActual, 0, 1., 0);
+        setColor(BRIGHT_WHITE + (8 * i) + 5, brightActual, 0, 1., 1. );
+        setColor(BRIGHT_WHITE + (8 * i) + 6, brightActual, 0, 0, 1. );
+        setColor(BRIGHT_WHITE + (8 * i) + 7, brightActual, 1., 0, 1. );
     }
     
     
@@ -145,15 +147,23 @@ void color::setPairs()
 {
     // This is awful
     // Take a look at this hacky shit. Hope it works right because this will suck to debug
-    for (int i = 0; i < 3; i++) {
-        init_pair(BRIGHT_WHITE + (8 * i)    , BRIGHT_WHITE + (7 * i)    , BRIGHT_BG + i);
-        init_pair(BRIGHT_WHITE + (8 * i) + 1, NORMAL_BG                 , BRIGHT_BG + i);
-        init_pair(BRIGHT_WHITE + (8 * i) + 2, BRIGHT_WHITE + (7 * i) + 1, BRIGHT_BG + i);
-        init_pair(BRIGHT_WHITE + (8 * i) + 3, BRIGHT_WHITE + (7 * i) + 2, BRIGHT_BG + i);
-        init_pair(BRIGHT_WHITE + (8 * i) + 4, BRIGHT_WHITE + (7 * i) + 3, BRIGHT_BG + i);
-        init_pair(BRIGHT_WHITE + (8 * i) + 5, BRIGHT_WHITE + (7 * i) + 4, BRIGHT_BG + i);
-        init_pair(BRIGHT_WHITE + (8 * i) + 6, BRIGHT_WHITE + (7 * i) + 5, BRIGHT_BG + i);
-        init_pair(BRIGHT_WHITE + (8 * i) + 7, BRIGHT_WHITE + (7 * i) + 6, BRIGHT_BG + i);
+    
+    
+    // bright/inverse colors
+    for (int i = 0; i < 8; i++) {
+        init_pair(BRIGHT_WHITE + i, NORMAL_BG, BRIGHT_WHITE + 16 + i );
+    }
+    
+    // normal colors
+    for (int i = 1; i < 4; i++) {
+        init_pair(BRIGHT_WHITE + (8 * i)    , BRIGHT_WHITE + (8 * i)    , BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 1, BRIGHT_WHITE + (8 * i) + 1, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 2, BRIGHT_WHITE + (8 * i) + 2, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 3, BRIGHT_WHITE + (8 * i) + 3, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 4, BRIGHT_WHITE + (8 * i) + 4, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 5, BRIGHT_WHITE + (8 * i) + 5, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 6, BRIGHT_WHITE + (8 * i) + 6, BRIGHT_BG + i);
+        init_pair(BRIGHT_WHITE + (8 * i) + 7, BRIGHT_WHITE + (8 * i) + 7, BRIGHT_BG + i);
         
     }
     

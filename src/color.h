@@ -55,7 +55,10 @@
  */
 
 #define BRIGHT_BG 60
-#define NORMAL_BG 61
+#define VIVID_BG 61
+#define NORMAL_BG 62
+#define DARK_BG 63
+
 // etc for other colors
 
 extern bool USE_FULL_COLOR;
