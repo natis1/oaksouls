@@ -31,11 +31,16 @@
  */
 #define LEVEL_GEN_OPTIMIZATION 0
 
-// Wall objects and other wall related stuff are <= 0. This means you can find walls just by finding tiles <= 0
+// Wall objects and other wall related stuff are <= 10. This means you can find walls just by finding tiles <= 10
 
 
 #define UNBREAKABLE_WALL -1
+
+
+// Breakable wall and wall-like objects are between 0 and 10
 #define BREAKABLE_WALL 0
+#define WALLTRAP 1
+
 #define FLOOR 11
 // For level generators that aren't sure if what they are making is actually hallway
 #define POSSIBLE_HALL 12
@@ -44,6 +49,10 @@
 
 // Objects that appear on floor are > 20. This means that you can find floors just by finding tiles >= 11
 #define DOOR 21
+#define UPSTAIR 22
+#define DOWNSTAIR 23
+#define OAKALTER 30
+#define ENEMYALTER 31
 
 
 // constants for binary tree stage1 method

@@ -16,20 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-#include <vector>
-#include "binary_tree.h"
-#include "level_gen_defines.h"
+#include "stage3.h"
+#include "level_gen.h"
 
-class level_gen
+
+stage3::stage3(std::vector<std::vector<int> >* mapdata)
 {
-public:
-    void binarySpace();
-    std::vector<std::vector<int>> mapdata;
+    this->mapdata = mapdata;
+    
+    concatPoints();
+    
+}
+
+
+
+
+void stage3::concatPoints()
+{
+    
+    for (int i = 0; i < LEVEL_HEIGHT; i++) {
+        for (int j = 0; j < LEVEL_WIDTH; j++) {
+            if (mapdata->at(i).at(j) >= FLOOR) {
+                floors.push_back( {i, j} );
+                
+            } else {
+                walls.push_back( {i, j} );
+            }
+        }
+    }
     
     
-private:
     
     
-    void cleanup();
-};
+}

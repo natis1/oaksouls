@@ -17,19 +17,38 @@
  */
 
 #pragma once
+
 #include <vector>
-#include "binary_tree.h"
 #include "level_gen_defines.h"
 
-class level_gen
+/**
+ * @todo write docs
+ */
+class stage3
 {
 public:
-    void binarySpace();
-    std::vector<std::vector<int>> mapdata;
+    
+    stage3(std::vector<std::vector<int>> *mapdata);
+    std::vector<std::vector<int>> *mapdata;
+    
+    
+    void placeObject(int objID);
+    void placeObject(int objID, int featureType);
     
     
 private:
     
+    struct point {
+        
+        int y;
+        int x;
+    };
     
-    void cleanup();
+    
+    void isFloor(int y, int x);
+    void concatPoints();
+    
+    
+    std::vector<point> floors;
+    std::vector<point> walls;
 };

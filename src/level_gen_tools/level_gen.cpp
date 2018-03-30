@@ -17,12 +17,16 @@
  */
 
 #include "level_gen.h"
+#include "stage2.h"
+#include "stage3.h"
 
 void level_gen::binarySpace() {
     binary_tree tr = binary_tree();
     mapdata = tr.mapdata;
     cleanup();
     stage2 s2 (&mapdata);
+    stage3 s3 (&mapdata);
+    
     
     
 }
