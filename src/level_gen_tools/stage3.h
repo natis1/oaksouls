@@ -31,15 +31,19 @@ public:
     stage3(std::vector<std::vector<int>> *mapdata);
     std::vector<std::vector<int>> *mapdata;
     
-    
+    // place an object, overriding whatever feature was there before- might be useful for water or something
     void placeObject(int objID);
+    
+    // place an object on a feature of a certain type.
     void placeObject(int objID, int featureType);
+    
+    // place an object on a preset location
+    void placeObject(int objID, int y, int x);
     
     
 private:
     
     struct point {
-        
         int y;
         int x;
     };
@@ -47,6 +51,7 @@ private:
     
     void isFloor(int y, int x);
     void concatPoints();
+    int removePoint(int pointID, int y, int x);
     
     
     std::vector<point> floors;

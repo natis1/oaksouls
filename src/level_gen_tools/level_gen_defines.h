@@ -35,6 +35,7 @@
 
 
 #define UNBREAKABLE_WALL -1
+#define MAP_EDGE -1
 
 
 // Breakable wall and wall-like objects are between 0 and 10

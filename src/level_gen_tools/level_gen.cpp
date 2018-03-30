@@ -36,12 +36,12 @@ void level_gen::cleanup()
     
     // make edges walls
     for (int i = 0; i < LEVEL_HEIGHT; i++) {
-        mapdata.at(i).at(0) = UNBREAKABLE_WALL;
-        mapdata.at(i).at(LEVEL_WIDTH - 1) = UNBREAKABLE_WALL;
+        mapdata.at(i).at(0) = MAP_EDGE;
+        mapdata.at(i).at(LEVEL_WIDTH - 1) = MAP_EDGE;
     }
     for (int j = 0; j < LEVEL_WIDTH; j++) {
-        mapdata.at(0).at(j) = UNBREAKABLE_WALL;
-        mapdata.at(LEVEL_HEIGHT - 1).at(j) = UNBREAKABLE_WALL;
+        mapdata.at(0).at(j) = MAP_EDGE;
+        mapdata.at(LEVEL_HEIGHT - 1).at(j) = MAP_EDGE;
     }
     
 }
