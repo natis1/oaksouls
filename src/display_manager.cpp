@@ -290,9 +290,9 @@ void display_manager::menuPlantTree()
     printw("Advantages");
     move(3,0);
     attron(COLOR_PAIR(3));
-    printw("Large plants can look cool, fight pests, and provide shade");
+    printw("Large plants can especially absorb CO2, fight pests, and provide shade");
     move(4,0);
-    printw("Plus, they are way better for the environment than grass");
+    printw("Supplement them with native grasses to build a prettier yard.");
     
     move(6,0);
     printw("If you are interested in learning more, check out:");
