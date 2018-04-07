@@ -21,17 +21,19 @@
 
 #include <iostream>
 
-void level_display::draw_level(std::vector<std::vector<int>> *tiles)
+level_display::level_display(map* level)
+{
+    this->level = level;
+}
+
+
+void level_display::draw_level()
 {
     move(2,0);
     
-    // TODO: add some goddamn color
-    
-    
-    
     for (int i = 0; i < LEVEL_HEIGHT; i++) {
         for (int j = 0; j < LEVEL_WIDTH; j++) {
-            switch (tiles->at(i).at(j)) {
+            switch (level->mapdata.at(i).at(j)) {
                 case BREAKABLE_WALL:
                 case UNBREAKABLE_WALL:
                 case MAP_EDGE:
@@ -48,10 +50,10 @@ void level_display::draw_level(std::vector<std::vector<int>> *tiles)
                     put_colored_ch(NORMAL_GREEN, '/');
                     break;
                 case OAKALTER:
-                    put_colored_ch(NORMAL_GREEN, '_');
+                    place_alter(i, j);
                     break;
                 case ENEMYALTER:
-                    put_colored_ch(NORMAL_RED, '_');
+                    place_alter(i, j);
                     break;
                 case DOWNSTAIR:
                     put_colored_ch(NORMAL_WHITE, '<');
@@ -60,7 +62,7 @@ void level_display::draw_level(std::vector<std::vector<int>> *tiles)
                     put_colored_ch(NORMAL_WHITE, '>');
                     break;
                 default:
-                    put_colored_ch(NORMAL_RED, '?');
+                    put_colored_ch(VIVID_RED, '?');
                 
             }
         }
@@ -74,6 +76,39 @@ void level_display::draw_level(std::vector<std::vector<int>> *tiles)
     
     
 }
+
+void level_display::place_alter(int y, int x)
+{
+    
+    for (uint k = 0; k < level->alters.size(); k++) {
+        if (level->alters.at(k).x == x && level->alters.at(k).y == y) {
+            if (level->alters.at(k).piety > 0) {
+                
+                if (level->alters.at(k).strength > 1000) {
+                    put_colored_ch(BRIGHT_GREEN, '_');
+                } else if (level->alters.at(k).strength >= 500) {
+                    put_colored_ch(VIVID_GREEN, '_');
+                } else {
+                    put_colored_ch(NORMAL_GREEN, '_');
+                }
+            } else {
+                if (level->alters.at(k).strength > 1000) {
+                    put_colored_ch(BRIGHT_RED, '_');
+                } else if (level->alters.at(k).strength >= 500) {
+                    put_colored_ch(VIVID_RED, '_');
+                } else {
+                    put_colored_ch(NORMAL_RED, '_');
+                }
+            }
+            
+            
+            return;
+        }
+    }
+    put_colored_ch(VIVID_RED, '?');
+    
+}
+
 
 
 //For items on the level not the level itself.

@@ -51,16 +51,43 @@ void stage3::concatPoints()
 
 void stage3::addAlter(int piety)
 {
+    point p;
+    
+    if (piety > 0) {
+        p = placeObject(OAKALTER, FLOOR);
+    } else {
+        p = placeObject(ENEMYALTER, FLOOR);
+    }
+    alter a;
+    a.piety = piety;
+    a.x = p.x;
+    a.y = p.y;
+    if (piety > 0) {
+        a.strength = piety;
+    } else {
+        a.strength = -piety;
+    }
     
     
-    
-    
+    this->level->alters.push_back(a);
 }
 
 void stage3::addExit(int level)
 {
+    point p;
+    // Not the best naming convention.
+    if (this->level->level < level) {
+        p = placeObject(DOWNSTAIR, FLOOR);
+    } else {
+        p = placeObject(UPSTAIR, FLOOR);
+    }
     
     
+    levelExit e;
+    e.level = level;
+    e.x = p.x;
+    e.y = p.y;
+    this->level->exits.push_back(e);
     
     
     
@@ -121,6 +148,8 @@ int stage3::removePoint(int pointID, int y, int x)
     if (pointID == FLOOR) {
         for (uint i = 0; i < floors.size(); i++) {
             if ( floors.at(i).y == y && floors.at(i).x == x) {
+                
+                // Here's hoping this actually works for vectors holding structs.
                 floors.erase( floors.begin() + i );
                 return 0;
             }

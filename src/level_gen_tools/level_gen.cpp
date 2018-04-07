@@ -20,21 +20,21 @@
 #include "stage2.h"
 #include "stage3.h"
 
-void level_gen::binarySpace() {
+void level_gen::binarySpace(int floor) {
     binary_tree tr = binary_tree();
     level.mapdata = tr.mapdata;
     cleanup();
     stage2 s2 (&level.mapdata);
     stage3 s3 (&level);
-    s3.placeObjectExternal(DOWNSTAIR, FLOOR);
-    s3.placeObjectExternal(UPSTAIR, FLOOR);
-    s3.placeObjectExternal(OAKALTER, FLOOR);
-    s3.placeObjectExternal(OAKALTER, FLOOR);
-    s3.placeObjectExternal(OAKALTER, FLOOR);
-    s3.placeObjectExternal(ENEMYALTER, FLOOR);
-    s3.placeObjectExternal(ENEMYALTER, FLOOR);
-    s3.placeObjectExternal(ENEMYALTER, FLOOR);
+    s3.addExit(floor - 1);
+    s3.addExit(floor + 1);
     
+    s3.addAlter(100);
+    s3.addAlter(-200);
+    s3.addAlter(560);
+    s3.addAlter(-1520);
+    s3.addAlter(-700);
+    s3.addAlter(5200);
 }
 
 void level_gen::cleanup()

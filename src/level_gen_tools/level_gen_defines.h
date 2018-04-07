@@ -75,7 +75,7 @@ struct alter {
     int strength;
 };
 
-struct levelExits {
+struct levelExit {
     int y;
     int x;
     // which level will this exit load?
@@ -90,6 +90,6 @@ struct map {
         
     std::vector<std::vector<int>> mapdata;
     std::vector<alter> alters;
-    std::vector<levelExits> exits;
+    std::vector<levelExit> exits;
 };
 

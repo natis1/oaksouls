@@ -30,11 +30,11 @@ level::level(int type, int difficulty)
 void level::generateFloor()
 {
     level_gen gen = level_gen();
-    gen.binarySpace();
-    level_display d = level_display();
-    tiles = &gen.level.mapdata;
+    gen.binarySpace(1);
+    levelMap = &gen.level;
+    level_display d = level_display(levelMap);
     d.set_default_colors();
-    d.draw_level(tiles);
+    d.draw_level();
     move(0,0);
     getch();
     clear();

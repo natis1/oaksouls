@@ -29,7 +29,7 @@ class level
 public:
     level(int type = 0, int difficulty = 1);
 protected:
-    std::vector<std::vector<int>> *tiles;
+    map *levelMap;
     int type;
     int difficulty;
 private:

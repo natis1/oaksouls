@@ -34,12 +34,15 @@
 class level_display
 {
 public:
-    void draw_level(std::vector<std::vector<int>> *tiles);
+    level_display(map *level);
+    void draw_level();
     void draw_items();
     void draw_stats();
     void draw_messages();
     void set_default_colors();
 private:
+    map *level;
     void put_colored_ch(int color, char ch);
+    void place_alter(int y, int x);
     
 };

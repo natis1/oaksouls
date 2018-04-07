@@ -29,7 +29,7 @@ public:
     
     map level;
     
-    void binarySpace();
+    void binarySpace(int floor);
     
     
     
