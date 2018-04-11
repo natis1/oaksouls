@@ -1,5 +1,5 @@
 /*
- * Oaksouls ~ A difficult roguelike about a	tree spirit.
+ * Oaksouls ~ A difficult roguelike about a tree spirit.
  * Copyright (C) 2018  Eli Stone eli.stonium+oak@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,5 +49,4 @@ void level_gen::cleanup()
         level.mapdata.at(0).at(j) = MAP_EDGE;
         level.mapdata.at(LEVEL_HEIGHT - 1).at(j) = MAP_EDGE;
     }
-    
 }
